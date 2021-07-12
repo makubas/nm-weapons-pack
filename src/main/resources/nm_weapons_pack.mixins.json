@@ -7,10 +7,10 @@
 
   ],
   "client": [
-
+    "PlayerEntityMixin"
   ],
   "server": [
-
+    "ServerPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
