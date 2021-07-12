@@ -1,9 +1,9 @@
-# Fabric Example Mod
+# NM's Weapons Pack
 
-## Setup
+## Overview
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+Mod is currently in development by n-kodem and makubas.
 
 ## License
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+This mod is available under MIT License.

@@ -1,29 +1,31 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
-  "version": "${version}",
+  "id": "nm_weapons_pack",
+  "version": "0.1",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "NM's weapons pack",
+  "description": "This mod adds new weapons to the game.",
   "authors": [
-    "Me!"
+    "makubas",
+    "nkodem"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/makubas/nm-weapons-pack",
+    "sources": "https://github.com/makubas/nm-weapons-pack",
+    "issues": "https://github.com/makubas/nm-weapons-pack/issues"
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/nm_weapons_pack/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "net.nm_weapons_pack.NmWeaponsPack"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "nm_weapons_pack.mixins.json"
   ],
 
   "depends": {
@@ -31,8 +33,5 @@
     "fabric": "*",
     "minecraft": "1.17.x",
     "java": ">=16"
-  },
-  "suggests": {
-    "another-mod": "*"
   }
 }
