@@ -21,6 +21,8 @@ public class NmItems {
         ;
     }
 
+
+
     private void registerItem(String id, Item item) {
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, id), item);
     }

@@ -2,7 +2,7 @@ package net.nm_weapons_pack;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import net.nm_weapons_pack.config.CONFIG;
+import net.nm_weapons_pack.config.NmConfig;
 import net.nm_weapons_pack.items.NmItems;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,7 +25,7 @@ public class NmWeaponsPack implements ModInitializer {
 		}
 
 		// Mod elements initialization
-		CONFIG.initConfig();
+		NmConfig.initConfig();
 		NmItems.registerItems();
 
 		logger.info("NM's Weapons Pack successfully initialized");
