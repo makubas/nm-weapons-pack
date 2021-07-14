@@ -94,7 +94,7 @@ public class NmConfig {
                 // Weapon categories layer
                 if (fileDir.equals("melee_weapons")) {
                     WeaponJsonFormat weaponJson = new Gson().fromJson(jsonObject, WeaponJsonFormat.class);
-                    Identifier weaponId = NmUtils.getNmId(fileName.replace(".json", ""));;
+                    Identifier weaponId = NmUtils.getNmId(fileName.replace(".json", ""));
                     String weaponName = weaponJson.name;
                     Rarity weaponRarity = switch (weaponJson.rarity) {
                         case "epic" -> Rarity.EPIC;
