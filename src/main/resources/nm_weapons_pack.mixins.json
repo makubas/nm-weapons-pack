@@ -4,7 +4,7 @@
   "package": "net.nm_weapons_pack.mixins",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-
+    "ItemMixin"
   ],
   "client": [
     "PlayerEntityMixin"
