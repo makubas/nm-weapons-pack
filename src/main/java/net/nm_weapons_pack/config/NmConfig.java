@@ -5,10 +5,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.recipe.Ingredient;
+
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.nm_weapons_pack.NmWeaponsPack;
 import net.nm_weapons_pack.items.weapons.helpers.WeaponConfigSettings;
+import net.nm_weapons_pack.materials.NmWeaponMaterial;
 import net.nm_weapons_pack.utils.NmUtils;
 import org.apache.commons.io.FileUtils;
 
@@ -19,7 +25,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NmConfig {
@@ -28,6 +36,7 @@ public class NmConfig {
 
     private static final Map<Identifier, Boolean> enabledWeapons = new HashMap<>();
     private static final Map<Identifier, WeaponConfigSettings> weaponConfigSettings = new HashMap<>();
+    private static final Map<String, NmWeaponMaterial> weaponMaterials = new HashMap<>();
 
     public static void initConfig() {
         NmWeaponsPack.debugMsg("Getting config data...");
@@ -58,8 +67,11 @@ public class NmConfig {
             }
         }
 
-        // Reading config data from
-        // run/config/nm_weapons_pack dir
+        /* Reading config data (recursively)
+        1. Getting materials from materials/*.json
+        2. Getting all other files *.json because it might contain reference to materials
+         */
+        readConfigMaterials();
         readConfigDir("");
     }
 
@@ -95,18 +107,36 @@ public class NmConfig {
                 if (fileDir.equals("melee_weapons")) {
                     WeaponJsonFormat weaponJson = new Gson().fromJson(jsonObject, WeaponJsonFormat.class);
                     Identifier weaponId = NmUtils.getNmId(fileName.replace(".json", ""));;
-                    String weaponName = weaponJson.name;
                     Rarity weaponRarity = switch (weaponJson.rarity) {
                         case "epic" -> Rarity.EPIC;
                         case "rare" -> Rarity.RARE;
                         case "uncommon" -> Rarity.UNCOMMON;
                         default -> Rarity.COMMON;
                     };
-                    WeaponConfigSettings configSettings = new WeaponConfigSettings(weaponName, weaponRarity);
-                    weaponConfigSettings.put(weaponId, configSettings);
+                    if (weaponJson.material != null) {
+                        // Getting material stats from other json / vanilla material
+                        NmWeaponMaterial material = weaponMaterials.get(weaponJson.material);
+                        WeaponConfigSettings configSettings = new WeaponConfigSettings(weaponRarity, material);
+                        weaponConfigSettings.put(weaponId, configSettings);
+                    } else {
+                        if (weaponJson.stats != null) {
+                            // Generating material from stats
+                            NmWeaponMaterial material = getMaterialFromStats(weaponJson.stats);
+                            WeaponConfigSettings configSettings = new WeaponConfigSettings(weaponRarity, material);
+                            weaponConfigSettings.put(weaponId, configSettings);
+                        } else {
+                            enabledWeapons.replace(weaponId, false);
+                            NmWeaponsPack.warnMsg(fileName + " in config folder is corrupted!");
+                        }
+                    }
 
                 } else if (fileDir.equals("ranged_weapons")) {
                     //RangedWeaponsJsonFormat rangedWeaponJson = new Gson().fromJson(json, RangedWeaponsJsonFormat.class);
+
+                } else if (fileDir.equals("materials")) {
+                    NmWeaponMaterial material = getMaterialFromStats(jsonObject);
+                    weaponMaterials.put(fileName.replace(".json", ""), material);
+
                 } else {
                     NmWeaponsPack.warnMsg("Unknown file in config folder: " + file.getName());
                 }
@@ -144,15 +174,51 @@ public class NmConfig {
         File[] dirFiles = dir.listFiles();
         if (dirFiles != null) {
             for (File file : dirFiles) {
-                if (file.isDirectory()) {
+                if (file.isDirectory() && !file.getName().equals("materials")) {
                     readConfigDir(String.valueOf(Path.of(dirPath).resolve(file.getName())));
                 } else if (file.isFile()) {
                     readConfigFile(file);
-                } else {
+                } else if (!file.getName().equals("materials")) {
                     NmWeaponsPack.warnMsg("Error occurred while opening " + dirPath + " config location!");
                 }
             }
         }
+    }
+
+    private static void readConfigMaterials() {
+        // Putting all materials to weaponMaterials map
+        File dir = new File(String.valueOf(configPath.resolve("materials")));
+        File[] dirFiles = dir.listFiles();
+        if (dirFiles != null) {
+            for (File file : dirFiles) {
+                if (file.isFile()) {
+                    readConfigFile(file);
+                }
+            }
+        }
+    }
+
+    private static NmWeaponMaterial getMaterialFromStats(JsonObject stats) {
+        // Getting WeaponMaterial from json stats
+        WeaponStatsJsonFormat statsJson = new Gson().fromJson(stats, WeaponStatsJsonFormat.class);
+        List<Item> ingredientSupplier = new ArrayList<Item>();
+        for (int i = 0; i < statsJson.repairIngredient.getAsJsonArray().size(); i++) {
+             Item item = Registry.ITEM.get(Identifier.tryParse(statsJson.repairIngredient.getAsJsonArray().get(i).getAsString()));
+             ingredientSupplier.add(item);
+        }
+        ItemConvertible[] itemConvertibles = new ItemConvertible[ingredientSupplier.size()];
+        Ingredient ingredient =  Ingredient.ofItems(ingredientSupplier.toArray(itemConvertibles));
+
+        return new NmWeaponMaterial(
+                statsJson.name,
+                statsJson.miningLevel,
+                statsJson.itemDurability,
+                statsJson.miningSpeed,
+                statsJson.attackDamage,
+                statsJson.enchantability,
+                statsJson.attackSpeed,
+                ingredient
+        );
     }
 
     public static Map<Identifier, Boolean> getEnabledWeapons() {
@@ -161,5 +227,9 @@ public class NmConfig {
 
     public static Map<Identifier, WeaponConfigSettings> getWeaponConfigSettings() {
         return weaponConfigSettings;
+    }
+
+    public static Map<String, NmWeaponMaterial> weaponMaterials() {
+        return weaponMaterials;
     }
 }

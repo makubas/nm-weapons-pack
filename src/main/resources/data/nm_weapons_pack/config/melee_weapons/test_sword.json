@@ -1,4 +1,4 @@
 {
-  "name": "Test Name",
-  "rarity": "epic"
+  "rarity": "epic",
+  "material": "test_material"
 }
