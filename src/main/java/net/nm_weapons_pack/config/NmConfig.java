@@ -13,15 +13,18 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.nm_weapons_pack.NmWeaponsPack;
+import net.nm_weapons_pack.config.json_formats.WeaponJsonFormat;
+import net.nm_weapons_pack.config.json_formats.WeaponRegistryJsonFormat;
+import net.nm_weapons_pack.config.json_formats.WeaponStatsJsonFormat;
 import net.nm_weapons_pack.items.weapons.helpers.WeaponConfigSettings;
 import net.nm_weapons_pack.materials.NmWeaponMaterial;
+import net.nm_weapons_pack.utils.JarUtils;
 import net.nm_weapons_pack.utils.NmUtils;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -31,10 +34,16 @@ import java.util.List;
 import java.util.Map;
 
 public class NmConfig {
+    // Dev purposes only
     private static final Path configPath = FabricLoader.getInstance().getConfigDir().normalize().resolve(NmWeaponsPack.MOD_ID);
-    private static final Path modConfigPath = Path.of(System.getProperty("user.dir")).getParent().resolve("src/main/resources/data/nm_weapons_pack/config/").normalize();
+    private static final Path modConfigPathDev = Path.of(System.getProperty("user.dir")).getParent().resolve("src/main/resources/data/nm_weapons_pack/config/").normalize();
+
+    // Release jar
+    private static final String configPathRelease = Path.of(JarUtils.getBasePathForClass(NmWeaponsPack.class)).getParent().resolve("config").resolve("nm_weapons_pack").toString();
+    private static final String modConfigPathRelease = "/data/nm_weapons_pack/config/";
 
     private static final Map<Identifier, Boolean> enabledWeapons = new HashMap<>();
+    private static final Map<Identifier, String> weaponTypes = new HashMap<>();
     private static final Map<Identifier, WeaponConfigSettings> weaponConfigSettings = new HashMap<>();
     private static final Map<String, NmWeaponMaterial> weaponMaterials = new HashMap<>();
 
@@ -49,21 +58,60 @@ public class NmConfig {
             // Create config folder
             try {
                 Files.createDirectory(configPath);
+                Files.createDirectory(configPath.resolve("sword"));
                 NmWeaponsPack.debugMsg("Successfully generated config folder!");
             } catch (IOException e) {
                 NmWeaponsPack.warnMsg("An error occurred while generating config folder!");
             }
 
             // Copy files to config from mod data/config
-            File dir = new File(String.valueOf(modConfigPath));
-            File[] dirFiles = dir.listFiles();
-            if (dirFiles != null) {
-                for (File file : dirFiles) {
-                    boolean isDirectory = file.isDirectory();
-                    copyToConfig(file.getName(), isDirectory);
+            if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+                File dir = new File(String.valueOf(modConfigPathDev));
+                File[] dirFiles = dir.listFiles();
+                if (dirFiles != null) {
+                    for (File file : dirFiles) {
+                        boolean isDirectory = file.isDirectory();
+                        copyToConfig(file.getName(), isDirectory);
+                    }
+                } else {
+                    NmWeaponsPack.warnMsg("Couldn't find mod config directory! Checked in: " + dir);
                 }
             } else {
-                NmWeaponsPack.warnMsg("Couldn't find mod config directory!");
+
+
+
+
+
+
+                JarUtils.copyFileFromJar(modConfigPathRelease + "weapon_registry.json", configPathRelease + "\\weapon_registry.json");
+                readConfigFile(Path.of(configPathRelease + "\\weapon_registry.json").toFile());
+                for (Identifier resourceIdentifier : enabledWeapons.keySet()) {
+                    String resourceName = resourceIdentifier.toString().replace(resourceIdentifier.getNamespace(), "").replace(":", "");
+                    String resourceType = weaponTypes.get(resourceIdentifier);
+                    NmWeaponsPack.warnMsg(modConfigPathRelease + resourceType + "/" + resourceName + ".json");
+                    JarUtils.copyFileFromJar(modConfigPathRelease + resourceType + "/" + resourceName + ".json",
+                            configPathRelease + "\\" + resourceType + "\\" + resourceName + ".json"); // TODO: 16.07.2021
+                }
+
+
+
+
+
+                /*
+
+                File[] dirFiles = dir.listFiles();
+                if (dirFiles != null) {
+                    for (File file : dirFiles) {
+                        boolean isDirectory = file.isDirectory();
+                        copyToConfig(file.getName(), isDirectory);
+                    }
+                } else {
+                    NmWeaponsPack.warnMsg("Couldn't find mod config directory! Checked in: " + dir);
+                }
+
+                 */
+
+
             }
         }
 
@@ -74,6 +122,30 @@ public class NmConfig {
         readConfigMaterials();
         readConfigDir("");
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private static void readConfigFile(File file) {
         // Actual reading from json file
@@ -93,13 +165,12 @@ public class NmConfig {
             JsonObject jsonObject = (JsonObject) obj;
 
             // General files layer
-            if (fileName.equals("enabled_weapons.json")) {
+            if (fileName.equals("weapon_registry.json")) {
                 for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-                    if (entry.getValue().getAsString().equals("enabled")) {
-                        enabledWeapons.put(NmUtils.getNmId(entry.getKey()), true);
-                    } else {
-                        enabledWeapons.put(NmUtils.getNmId(entry.getKey()), false);
-                    }
+                    WeaponRegistryJsonFormat weaponRegistry = new Gson().fromJson(entry.getValue().getAsJsonObject(), WeaponRegistryJsonFormat.class);
+                    Identifier id = NmUtils.getNmId(entry.getKey());
+                    enabledWeapons.put(id, weaponRegistry.enabled);
+                    weaponTypes.put(id, weaponRegistry.type);
                 }
             } else {
 
@@ -151,21 +222,51 @@ public class NmConfig {
     private static void copyToConfig(String filePath, boolean isDirectory) {
         // Copying all files and dirs from mod config
         // to general config folder
-        if (isDirectory) {
-            try {
-                FileUtils.copyDirectory(modConfigPath.resolve(filePath).toFile(), configPath.resolve(filePath).toFile());
-            } catch (IOException e) {
-                NmWeaponsPack.warnMsg("An error occurred while copying " + filePath + " directory to config location!");
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            if (isDirectory) {
+                try {
+                    FileUtils.copyDirectory(modConfigPathDev.resolve(filePath).toFile(), configPath.resolve(filePath).toFile());
+                } catch (IOException e) {
+                    NmWeaponsPack.warnMsg("An error occurred while copying " + filePath + " directory to config location!");
+                }
+            } else {
+                try {
+                    Files.copy(modConfigPathDev.resolve(filePath), configPath.resolve(filePath), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    NmWeaponsPack.warnMsg("An error occurred while copying " + filePath + " to config location!");
+                }
             }
         } else {
-            try {
-                Files.copy(modConfigPath.resolve(filePath), configPath.resolve(filePath), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                NmWeaponsPack.warnMsg("An error occurred while copying " + filePath + " to config location!");
+            URL url = NmConfig.class.getResource("/data/nm_weapons_pack/config/" + filePath);
+            if (isDirectory) {
+                try {
+                    FileUtils.copyURLToFile(url, configPath.resolve(filePath).toFile());
+                    //FileUtils.copyDirectory(modConfigPathRelease.resolve(filePath).toFile(), configPath.resolve(filePath).toFile());
+                } catch (IOException e) {
+                    NmWeaponsPack.warnMsg("An error occurred while copying " + filePath + " directory to config location!");
+                }
+            } else {
+                try {
+                    FileUtils.copyURLToFile(url, configPath.resolve(filePath).toFile());
+                    //Files.copy(modConfigPathRelease.resolve(filePath), configPath.resolve(filePath), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    NmWeaponsPack.warnMsg("An error occurred while copying " + filePath + " to config location!");
+                }
             }
         }
 
+
     }
+
+
+
+
+
+
+
+
+
+
 
     private static void readConfigDir(String dirPath) {
         // Recursive function from reading all files/dirs
@@ -198,6 +299,30 @@ public class NmConfig {
         }
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private static NmWeaponMaterial getMaterialFromStats(JsonObject stats) {
         // Getting WeaponMaterial from json stats
         WeaponStatsJsonFormat statsJson = new Gson().fromJson(stats, WeaponStatsJsonFormat.class);
@@ -220,6 +345,18 @@ public class NmConfig {
                 ingredient
         );
     }
+
+    private Path getModConfigPathRelease() {
+        Path modConfigPathRelease = null;
+        try {
+            modConfigPathRelease = Path.of(NmConfig.class.getProtectionDomain().getCodeSource().getLocation().toURI()).normalize().resolve("data/nm_weapons_pack/config/").normalize();;
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        getClass().getResource("/data/nm_weapons_pack/config/");
+        return modConfigPathRelease;
+    }
+
 
     public static Map<Identifier, Boolean> getEnabledWeapons() {
         return enabledWeapons;

@@ -3,6 +3,8 @@ package net.nm_weapons_pack;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.nm_weapons_pack.config.NmConfig;
+import net.nm_weapons_pack.config.NmConfigDev;
+import net.nm_weapons_pack.config.NmConfigRelease;
 import net.nm_weapons_pack.items.NmItems;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,10 +24,12 @@ public class NmWeaponsPack implements ModInitializer {
 			debugMsg("######################################################");
 			debugMsg("# WARNING: NM's Weapons Pack is running in dev mode! #");
 			debugMsg("######################################################");
+			// NmConfigDev.initConfig();
+		} else {
+			NmConfigRelease.initConfig();
 		}
 
 		// Mod elements initialization
-		NmConfig.initConfig();
 		NmItems.registerItems();
 
 		logger.info("NM's Weapons Pack successfully initialized");
