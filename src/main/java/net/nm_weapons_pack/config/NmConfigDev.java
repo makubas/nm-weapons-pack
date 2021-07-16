@@ -10,11 +10,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class NmConfigDev extends NmConfigBase {
-    private static final String modConfigPath = "/data/nm_weapons_pack/config/";
+    private static final String modConfigPath111 = "resources/data/nm_weapons_pack/config/";
+    private static final String modConfigPath = String.valueOf(Path.of(System.getProperty("user.dir")).getParent().resolve("src/main/resources/data/nm_weapons_pack/config/")) + "\\";
 
     public static void initConfig() {
         NmWeaponsPack.debugMsg("Getting config data...");
-
 
         if (!configPath.toFile().exists()) {
             // Generate initial config files
@@ -28,8 +28,8 @@ public class NmConfigDev extends NmConfigBase {
             createConfigDir("_materials");
 
             // Copying and reading weapon registry json
-            readConfigFile(Path.of(configPath + "\\weapon_registry.json").toFile());
             copyFileFromConfig(modConfigPath + "weapon_registry.json", configPath + "\\weapon_registry.json");
+            readConfigFile(Path.of(configPath + "\\weapon_registry.json").toFile());
 
             // Copying materials
             for (String materialName : NmMaterials.getWeaponMaterialsNames()) {

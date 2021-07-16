@@ -66,7 +66,7 @@ class NmConfigBase {
             } else {
 
                 // Weapon categories layer
-                if (fileDir.equals("melee_weapons")) {
+                if (fileDir.equals("sword")) {
                     WeaponJsonFormat weaponJson = new Gson().fromJson(jsonObject, WeaponJsonFormat.class);
                     Identifier weaponId = NmUtils.getNmId(fileName.replace(".json", ""));;
                     Rarity weaponRarity = getRarity(weaponJson.rarity);
@@ -87,10 +87,10 @@ class NmConfigBase {
                         }
                     }
 
-                } else if (fileDir.equals("ranged_weapons")) {
+                } else if (fileDir.equals("bow")) {
                     //RangedWeaponsJsonFormat rangedWeaponJson = new Gson().fromJson(json, RangedWeaponsJsonFormat.class);
 
-                } else if (fileDir.equals("materials")) {
+                } else if (fileDir.equals("_materials")) {
                     NmWeaponMaterial material = getMaterialFromStats(jsonObject);
                     weaponMaterials.put(fileName.replace(".json", ""), material);
 
