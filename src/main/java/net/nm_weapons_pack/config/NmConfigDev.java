@@ -27,11 +27,15 @@ public class NmConfigDev extends NmConfigBase {
             }
             createConfigDir("_materials");
 
-            // Copying weapon registry json
+            // Copying and reading weapon registry json
+            readConfigFile(Path.of(configPath + "\\weapon_registry.json").toFile());
             copyFileFromConfig(modConfigPath + "weapon_registry.json", configPath + "\\weapon_registry.json");
 
             // Copying materials
-            copyFileFromConfig(modConfigPath + "weapon_registry.json", configPath + "\\weapon_registry.json");
+            for (String materialName : NmMaterials.getWeaponMaterialsNames()) {
+                copyFileFromConfig(modConfigPath + "_materials" + "/" + materialName + ".json",
+                        configPath + "\\" + "_materials" + "\\" + materialName + ".json");
+            }
 
             // Copying and the rest of files
             for (Identifier resourceIdentifier : enabledWeapons.keySet()) {
@@ -58,7 +62,8 @@ public class NmConfigDev extends NmConfigBase {
         try {
             Files.copy(Path.of(from), Path.of(to));
         } catch (IOException e) {
-            NmWeaponsPack.warnMsg("An error occurred while copying " + Path.of(from).toFile().getName() + " to " + Path.of(to).toFile().getName());
+            NmWeaponsPack.warnMsg("An error occurred while copying " + Path.of(from).toString() + " to " + Path.of(to).toString());
+            e.printStackTrace();
         }
     }
 }
