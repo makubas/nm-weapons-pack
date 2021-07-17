@@ -8,10 +8,8 @@ import java.util.Map;
 public class NmMaterials {
     private static final List<String> weaponMaterialsNames = new ArrayList<>();
     private static final Map<String, NmWeaponMaterial> weaponMaterials = new HashMap<>();
-    /*
-    Example material:
-    public static final ToolMaterial TEST_MATERIAL = new TestMaterialClass();
-     */
+    private static final List<String> projectileMaterialsNames = new ArrayList<>();
+    private static final Map<String, NmProjectileMaterial> projectileMaterials = new HashMap<>();
 
     public static void registerMaterials() {
         weaponMaterialsNames.add("test_material");
@@ -23,5 +21,13 @@ public class NmMaterials {
 
     public static List<String> getWeaponMaterialsNames() {
         return weaponMaterialsNames;
+    }
+
+    public static Map<String, NmProjectileMaterial> getProjectileMaterials() {
+        return projectileMaterials;
+    }
+
+    public static List<String> getProjectileMaterialsNames() {
+        return projectileMaterialsNames;
     }
 }

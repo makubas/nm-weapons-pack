@@ -12,25 +12,13 @@ import net.nm_weapons_pack.dev.TestSword;
 import net.nm_weapons_pack.utils.NmUtils;
 
 public class NmItems {
-    // Item group
     public static final ItemGroup NM_WEAPONS_PACK_GROUP = FabricItemGroupBuilder.build(
             NmUtils.getNmId("general"),
             () -> new ItemStack(NmItems.TEST_SWORD));
 
-    /*
-    Example item declaration:
-    public static final Item TEST_ITEM = new TestItemClass();
-     */
-
     public static final TestSword TEST_SWORD = new TestSword();
 
-    // Items registration
     public static void registerItems() {
-        /*
-        Example item registration:
-        registerItem("test_item", TEST_ITEM)
-         */
-
         registerItem(TestSword.getId(), TEST_SWORD);
     }
 

@@ -1,4 +1,15 @@
 {
   "rarity": "epic",
-  "material": "test_material"
+  "stats": {
+    "name": "Emerald",
+    "miningLevel": 3,
+    "itemDurability": 1200,
+    "miningSpeed": 9.0,
+    "attackDamage": 8.0,
+    "enchantability": 26,
+    "attackSpeed": 5.5,
+    "repairIngredient": [
+      "minecraft:emerald"
+    ]
+  }
 }

@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.entity.ai.goal.BreakDoorGoal;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
@@ -82,7 +83,7 @@ public class NmConfig {
 
         // Reading files in proper order
         readConfigFile(Path.of(configPath + "\\weapon_registry.json").toFile());
-        for (String entry : NmMaterials.getWeaponMaterials().keySet()) {
+        for (String entry : NmMaterials.getWeaponMaterialsNames()) {
             readConfigFile(Path.of(configPath + "\\" + "_materials" + "\\" + entry + ".json").toFile());
         }
         for (Identifier resourceIdentifier : enabledWeapons.keySet()) {
@@ -104,10 +105,7 @@ public class NmConfig {
         }
 
         try {
-            FileReader json = new FileReader(file);
-            JsonParser parser = new JsonParser();
-            Object obj = parser.parse(json);
-            JsonObject jsonObject = (JsonObject) obj;
+            JsonObject jsonObject = (JsonObject) new JsonParser().parse(new FileReader(file));
 
             // General files layer
             if (fileName.equals("weapon_registry.json")) {
@@ -118,43 +116,48 @@ public class NmConfig {
                     weaponTypes.put(id, weaponRegistry.type);
                 }
             } else {
-
-                // Weapon categories layer
-                if (fileDir.equals("sword")) {
-                    NmWeaponJsonFormat weaponJson = new Gson().fromJson(jsonObject, NmSwordJsonFormat.class);
-                    Identifier weaponId = NmUtils.getNmId(fileName.replace(".json", ""));;
-                    Rarity weaponRarity = getRarity(weaponJson.rarity);
-                    if (weaponJson.material != null) {
-                        // Getting material stats from other json / vanilla material
-                        NmWeaponMaterial material = weaponMaterials.get(weaponJson.material);
-                        WeaponConfigSettings configSettings = new WeaponConfigSettings(weaponRarity, material);
-                        weaponConfigSettings.put(weaponId, configSettings);
-                    } else {
-                        if (weaponJson.stats != null) {
-                            // Generating material from stats
-                            NmWeaponMaterial material = getMaterialFromStats(weaponJson.stats);
-                            WeaponConfigSettings configSettings = new WeaponConfigSettings(weaponRarity, material);
-                            weaponConfigSettings.put(weaponId, configSettings);
-                        } else {
-                            enabledWeapons.replace(weaponId, false);
-                            NmWeaponsPack.warnMsg(fileName + " in config folder is corrupted!");
-                        }
-                    }
-
-                } else if (fileDir.equals("bow")) {
-                    //RangedWeaponsJsonFormat rangedWeaponJson = new Gson().fromJson(json, RangedWeaponsJsonFormat.class);
-
-                } else if (fileDir.equals("_materials")) {
-                    NmWeaponMaterial material = getMaterialFromStats(jsonObject);
-                    weaponMaterials.put(fileName.replace(".json", ""), material);
-
-                } else {
-                    NmWeaponsPack.warnMsg("Unknown file in config folder: " + file.getName());
+                switch (fileDir) {
+                    case "sword" -> readSword(jsonObject, file);
+                    case "bow" -> readBow(jsonObject);
+                    case "war_hammer" -> readWarHammer(jsonObject);
+                    case "_materials" -> weaponMaterials.put(fileName.replace(".json", ""), getMaterialFromStats(jsonObject));
+                    default -> NmWeaponsPack.warnMsg("Unknown file in config folder: " + fileName);
                 }
             }
 
         } catch (FileNotFoundException e) {
-            NmWeaponsPack.warnMsg("An error occurred while reading json data from " + file.getName());
+            NmWeaponsPack.warnMsg("An error occurred while reading json data from " + fileName);
+        }
+    }
+
+    private static void readSword(JsonObject jsonObject, File file) {
+        NmSwordJsonFormat weaponJson = new Gson().fromJson(jsonObject, NmSwordJsonFormat.class);
+        Identifier weaponId = NmUtils.getNmId(file.getName().replace(".json", ""));
+        Rarity weaponRarity = getRarity(weaponJson.rarity);
+        NmWeaponMaterial material = getMaterialOrStats(weaponJson);
+        if (material == null) {
+            enabledWeapons.replace(weaponId, false);
+            NmWeaponsPack.warnMsg(file.getName() + " in config folder is corrupted!");
+        }
+        WeaponConfigSettings configSettings = new WeaponConfigSettings(weaponRarity, material);
+        weaponConfigSettings.put(weaponId, configSettings);
+    }
+
+    private static void readBow(JsonObject jsonObject) {
+
+    }
+
+    private static void readWarHammer(JsonObject jsonObject) {
+
+    }
+
+    private static <T extends NmWeaponJsonFormat> NmWeaponMaterial getMaterialOrStats(T weaponJson) {
+        if (weaponJson.material != null) {
+            return weaponMaterials.get(weaponJson.material);
+        } else if (weaponJson.stats != null) {
+            return getMaterialFromStats(weaponJson.stats);
+        } else {
+            return null;
         }
     }
 

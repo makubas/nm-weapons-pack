@@ -4,7 +4,6 @@ import net.minecraft.util.Rarity;
 import net.nm_weapons_pack.materials.NmWeaponMaterial;
 
 public record WeaponConfigSettings(Rarity rarity, NmWeaponMaterial material) {
-
     public Rarity getRarity() {
         return rarity;
     }
