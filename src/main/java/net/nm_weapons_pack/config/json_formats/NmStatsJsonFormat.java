@@ -2,7 +2,7 @@ package net.nm_weapons_pack.config.json_formats;
 
 import com.google.gson.JsonElement;
 
-public class WeaponStatsJsonFormat {
+public class NmStatsJsonFormat {
     public String name;
     public int miningLevel;
     public int itemDurability;
