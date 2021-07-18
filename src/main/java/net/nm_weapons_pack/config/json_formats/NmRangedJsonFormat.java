@@ -1,5 +1,5 @@
 package net.nm_weapons_pack.config.json_formats;
 
-public class NmBowJsonFormat extends NmWeaponJsonFormat {
+public class NmRangedJsonFormat extends NmWeaponJsonFormat {
     // Json arguments for all ranged weapons configs
 }

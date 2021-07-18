@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 import net.nm_weapons_pack.NmWeaponsPack;
-import net.nm_weapons_pack.config.json_formats.NmSwordJsonFormat;
+import net.nm_weapons_pack.config.json_formats.NmMeleeWeaponJsonFormat;
 import net.nm_weapons_pack.config.json_formats.NmWeaponJsonFormat;
 import net.nm_weapons_pack.config.json_formats.NmWeaponRegistryJsonFormat;
 import net.nm_weapons_pack.config.json_formats.NmStatsJsonFormat;
@@ -130,7 +130,7 @@ public class NmConfig {
     }
 
     private static void readSword(JsonObject jsonObject, File file) {
-        NmSwordJsonFormat weaponJson = new Gson().fromJson(jsonObject, NmSwordJsonFormat.class);
+        NmMeleeWeaponJsonFormat weaponJson = new Gson().fromJson(jsonObject, NmMeleeWeaponJsonFormat.class);
         Identifier weaponId = NmUtils.getNmId(file.getName().replace(".json", ""));
         Rarity weaponRarity = getRarity(weaponJson.rarity);
         NmWeaponMaterial material = getMaterialOrStats(weaponJson);
