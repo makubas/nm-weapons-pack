@@ -12,17 +12,18 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.nm_weapons_pack.items.weapons.helpers.NmWeaponFromConfig;
-import net.nm_weapons_pack.items.weapons.helpers.WeaponConfigSettings;
+import net.nm_weapons_pack.items.weapons.helpers.NmMeleeWeapon;
+import net.nm_weapons_pack.items.weapons.helpers.config_settings.MeleeWeaponConfigSettings;
 
-public abstract class NmSwordWeapon extends NmWeaponFromConfig {
+public abstract class NmSwordWeapon extends NmMeleeWeapon {
     protected static final NmWeaponType weaponType = NmWeaponType.SWORD;
     private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
-    public NmSwordWeapon(WeaponConfigSettings weaponConfigSettings) {
-        super(weaponConfigSettings);
+
+    public NmSwordWeapon(MeleeWeaponConfigSettings meleeWeaponConfigSettings) {
+        super(meleeWeaponConfigSettings);
         ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", (double)weaponConfigSettings.getMaterial().getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
-        builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", (double)weaponConfigSettings.getMaterial().getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
+        builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", (double) meleeWeaponConfigSettings.getMaterial().getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
+        builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", (double) meleeWeaponConfigSettings.getMaterial().getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
         this.attributeModifiers = builder.build();
     }
 

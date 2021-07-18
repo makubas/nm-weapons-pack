@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.entity.ai.goal.BreakDoorGoal;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.recipe.Ingredient;
@@ -17,7 +16,7 @@ import net.nm_weapons_pack.config.json_formats.NmSwordJsonFormat;
 import net.nm_weapons_pack.config.json_formats.NmWeaponJsonFormat;
 import net.nm_weapons_pack.config.json_formats.NmWeaponRegistryJsonFormat;
 import net.nm_weapons_pack.config.json_formats.NmStatsJsonFormat;
-import net.nm_weapons_pack.items.weapons.helpers.WeaponConfigSettings;
+import net.nm_weapons_pack.items.weapons.helpers.config_settings.MeleeWeaponConfigSettings;
 import net.nm_weapons_pack.items.weapons.types.NmWeaponType;
 import net.nm_weapons_pack.materials.NmMaterials;
 import net.nm_weapons_pack.materials.NmWeaponMaterial;
@@ -36,7 +35,7 @@ import java.util.Map;
 public class NmConfig {
     private static final Map<Identifier, Boolean> enabledWeapons = new HashMap<>();
     private static final Map<Identifier, String> weaponTypes = new HashMap<>();
-    private static final Map<Identifier, WeaponConfigSettings> weaponConfigSettings = new HashMap<>();
+    private static final Map<Identifier, MeleeWeaponConfigSettings> weaponConfigSettings = new HashMap<>();
     private static final Map<String, NmWeaponMaterial> weaponMaterials = new HashMap<>();
 
     private static final Path configPath = FabricLoader.getInstance().getConfigDir().resolve(NmWeaponsPack.MOD_ID);
@@ -139,7 +138,7 @@ public class NmConfig {
             enabledWeapons.replace(weaponId, false);
             NmWeaponsPack.warnMsg(file.getName() + " in config folder is corrupted!");
         }
-        WeaponConfigSettings configSettings = new WeaponConfigSettings(weaponRarity, material);
+        MeleeWeaponConfigSettings configSettings = new MeleeWeaponConfigSettings(weaponRarity, material);
         weaponConfigSettings.put(weaponId, configSettings);
     }
 
@@ -229,7 +228,7 @@ public class NmConfig {
         return enabledWeapons;
     }
 
-    public static Map<Identifier, WeaponConfigSettings> getWeaponConfigSettings() {
+    public static Map<Identifier, MeleeWeaponConfigSettings> getWeaponConfigSettings() {
         return weaponConfigSettings;
     }
 
