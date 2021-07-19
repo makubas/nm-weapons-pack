@@ -16,8 +16,10 @@ public class NmItems {
             NmUtils.getNmId("general"),
             () -> new ItemStack(NmItems.TEST_SWORD));
 
+    // Items variables registration
     public static final TestSword TEST_SWORD = new TestSword();
 
+    // Actual item registry
     public static void registerItems() {
         registerItem(TestSword.getId(), TEST_SWORD);
     }
