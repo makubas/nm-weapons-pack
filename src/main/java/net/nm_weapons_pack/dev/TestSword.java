@@ -1,20 +1,22 @@
 package net.nm_weapons_pack.dev;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.nm_weapons_pack.abilities.AbilityRarity;
-import net.nm_weapons_pack.abilities.AbilityTooltip;
-import net.nm_weapons_pack.abilities.RightClickAbility;
+import net.minecraft.util.TypedActionResult;
+import net.minecraft.world.World;
+import net.nm_weapons_pack.abilities.*;
 import net.nm_weapons_pack.config.NmConfig;
 import net.nm_weapons_pack.items.weapons.types.NmSwordWeapon;
 import net.nm_weapons_pack.utils.NmUtils;
 
-public class TestSword extends NmSwordWeapon implements RightClickAbility {
+public class TestSword extends NmSwordWeapon implements RightClickAbility, PassiveAbility {
     protected static Identifier id = NmUtils.getNmId("test_sword");
 
     public TestSword() {
         super(NmConfig.getWeaponConfigSettings().get(TestSword.getId()));
-        AbilityTooltip abilityTooltip = new AbilityTooltip(getAbilityName(), getAbilityDescription(), getAbilityType(), getAbilityRarity());
-        addAbilityTooltip(abilityTooltip);
+        addAbilities(this);
     }
 
     public static Identifier getId() {
@@ -22,18 +24,31 @@ public class TestSword extends NmSwordWeapon implements RightClickAbility {
     }
 
     @Override
-    public String getAbilityName() {
-        return "Test Ability";
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        user.heal(6f);
+        user.getItemCooldownManager().set(user.getStackInHand(hand).getItem(), 70);
+        return super.use(world, user, hand);
     }
 
     @Override
-    public String getAbilityDescription() {
-        String description = "Heals you <hp>6HP<hp> and gives you <spe>+100% speed<spe>!";
-        return description;
+    public AbilityTooltip getRightClickAbilityTooltip() {
+        return new AbilityTooltip(
+                "Test Right Click Ability",
+                "Heals you <hp>6HP<hp> and gives you <spe>+100% speed<spe>",
+                AbilityType.RIGHT_CLICK,
+                AbilityRarity.EPIC,
+                70
+        );
     }
 
     @Override
-    public AbilityRarity getAbilityRarity() {
-        return AbilityRarity.RARE;
+    public AbilityTooltip getPassiveAbilityTooltip() {
+        return new AbilityTooltip(
+                "Test Passive Ability",
+                "Gives you <eff>jump boost 2<eff>",
+                AbilityType.PASSIVE,
+                AbilityRarity.RARE,
+                0
+        );
     }
 }

@@ -3,7 +3,7 @@ package net.nm_weapons_pack.abilities;
 import net.minecraft.text.TranslatableText;
 import net.nm_weapons_pack.utils.text_formatting.TextFormatter;
 
-public record AbilityTooltip(String title, String description, AbilityType type, AbilityRarity rarity) {
+public record AbilityTooltip(String title, String description, AbilityType type, AbilityRarity rarity, Integer cooldown) {
     @Override
     public String title() {
         return title;
@@ -26,5 +26,14 @@ public record AbilityTooltip(String title, String description, AbilityType type,
     @Override
     public AbilityRarity rarity() {
         return rarity;
+    }
+
+    @Override
+    public Integer cooldown() {
+        return cooldown;
+    }
+
+    public Float cooldownSeconds() {
+        return (float) (cooldown() / 20);
     }
 }

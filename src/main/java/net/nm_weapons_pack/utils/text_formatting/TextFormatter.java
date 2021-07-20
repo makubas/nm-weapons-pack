@@ -90,14 +90,7 @@ public class TextFormatter {
         if (tag == null) {
             return (TranslatableText) new TranslatableText(text).setStyle(NmStyle.DESCRIPTION);
         } else {
-            return (TranslatableText) switch (tag) {
-                case HP -> new TranslatableText(text).setStyle(NmStyle.HEALTH);
-                case DEF -> new TranslatableText(text).setStyle(NmStyle.DEFENCE);
-                case DMG -> new TranslatableText(text).setStyle(NmStyle.DAMAGE);
-                case EFF -> new TranslatableText(text).setStyle(NmStyle.EFFECT);
-                case SPE -> new TranslatableText(text).setStyle(NmStyle.SPEED);
-                case SPEC -> new TranslatableText(text).setStyle(NmStyle.SPECIAL);
-            };
+            return TextTag.getTextWithTag(text, tag);
         }
     }
 }
