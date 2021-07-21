@@ -97,5 +97,10 @@ Formatting tags available for creating ability description
 are listed in enum `utils.text_formatting.TextTag`.
 
 
+## Weapon structure:
+* Class under `/weapons`
+* Config `.json` file under `/weapon_type` & `weapon_registry.json` addition
+* Resources in `src/main/resources/assets/nm_weapons_pack`
+
 
 

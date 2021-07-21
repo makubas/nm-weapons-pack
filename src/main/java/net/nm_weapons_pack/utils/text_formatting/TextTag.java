@@ -6,12 +6,12 @@ import net.minecraft.text.TranslatableText;
 import net.nm_weapons_pack.utils.NmStyle;
 
 public enum TextTag {
-    HP(NmStyle.HEALTH, "❤"),
-    DEF(NmStyle.DEFENCE, ""),
-    DMG(NmStyle.DAMAGE, ""),
-    SPE(NmStyle.SPEED, ""),
-    EFF(NmStyle.EFFECT),
-    SPEC(NmStyle.SPECIAL);
+    HP(NmStyle.HEALTH.getStyle(), "❤"),
+    DEF(NmStyle.DEFENCE.getStyle(), ""),
+    DMG(NmStyle.DAMAGE.getStyle(), ""),
+    SPE(NmStyle.SPEED.getStyle(), ""),
+    EFF(NmStyle.EFFECT.getStyle()),
+    SPEC(NmStyle.SPECIAL.getStyle());
 
     final Style style;
     final String symbol;

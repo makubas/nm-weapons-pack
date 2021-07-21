@@ -11,12 +11,13 @@ import net.nm_weapons_pack.items.weapons.helpers.NmMeleeWeapon;
 import net.nm_weapons_pack.items.weapons.helpers.config_settings.MeleeWeaponConfigSettings;
 
 public abstract class NmSwordWeapon extends NmMeleeWeapon {
-    protected static final NmWeaponType weaponType = NmWeaponType.SWORD;
+    protected static NmWeaponType weaponType = NmWeaponType.SWORD;
 
     public NmSwordWeapon(MeleeWeaponConfigSettings meleeWeaponConfigSettings) {
         super(meleeWeaponConfigSettings);
     }
 
+    @Override
     public NmWeaponType getWeaponType() {
         return weaponType;
     }

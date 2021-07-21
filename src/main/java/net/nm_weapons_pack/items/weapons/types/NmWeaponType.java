@@ -1,23 +1,42 @@
 package net.nm_weapons_pack.items.weapons.types;
 
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.nm_weapons_pack.NmWeaponsPack;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public enum NmWeaponType {
-    WAR_HAMMER,
-    JAVELIN,
-    SPEAR,
-    SHURIKEN,
-    SWORD,
-    BOW,
-    LONGBOW,
-    DART,
-    MACE,
-    STAFF,
-    DAGGER,
-    BATTLE_AXE,
-    KATAR,
-    DISC,
-    SCYTHE;
+    WAR_HAMMER(),
+    JAVELIN(),
+    SPEAR(),
+    SHURIKEN(),
+    SWORD(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
+    BOW(),
+    LONGBOW(),
+    DART(),
+    MACE(),
+    STAFF(),
+    DAGGER(),
+    BATTLE_AXE(),
+    KATAR(),
+    DISC(),
+    SCYTHE();
+
+    private List<Enchantment> availableEnchantments;
+
+    private NmWeaponType(Enchantment... enchantments) {
+        this.availableEnchantments = new ArrayList<>();
+        if (this.availableEnchantments != null) {
+            this.availableEnchantments.addAll(Arrays.asList(enchantments));
+        }
+    }
+
+    public List<Enchantment> getAvailableEnchantments() {
+        return this.availableEnchantments;
+    }
 
     public static NmWeaponType getWeaponType(String id) {
         for (NmWeaponType type : NmWeaponType.values()) {

@@ -16,7 +16,7 @@ public class TestSword extends NmSwordWeapon implements RightClickAbility, Passi
 
     public TestSword() {
         super(NmConfig.getWeaponConfigSettings().get(TestSword.getId()));
-        addAbilities(this);
+        initializeTooltip(this);
     }
 
     public static Identifier getId() {
@@ -36,7 +36,7 @@ public class TestSword extends NmSwordWeapon implements RightClickAbility, Passi
                 "Test Right Click Ability",
                 "Heals you <hp>6HP<hp> and gives you <spe>+100% speed<spe>",
                 AbilityType.RIGHT_CLICK,
-                AbilityRarity.EPIC,
+                rarity,
                 70
         );
     }
@@ -47,7 +47,7 @@ public class TestSword extends NmSwordWeapon implements RightClickAbility, Passi
                 "Test Passive Ability",
                 "Gives you <eff>jump boost 2<eff>",
                 AbilityType.PASSIVE,
-                AbilityRarity.RARE,
+                rarity,
                 0
         );
     }

@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TextFormatter {
-    private List<TranslatableText> abilityString = new ArrayList<>();
-    private String abilityText;
+    private final List<TranslatableText> abilityString = new ArrayList<>();
+    private final String abilityText;
 
     public TextFormatter (String text) {
         abilityText = text;
@@ -88,7 +88,7 @@ public class TextFormatter {
 
     private TranslatableText makeTextWithTag(String text, TextTag tag) {
         if (tag == null) {
-            return (TranslatableText) new TranslatableText(text).setStyle(NmStyle.DESCRIPTION);
+            return (TranslatableText) new TranslatableText(text).setStyle(NmStyle.DESCRIPTION.getStyle());
         } else {
             return TextTag.getTextWithTag(text, tag);
         }

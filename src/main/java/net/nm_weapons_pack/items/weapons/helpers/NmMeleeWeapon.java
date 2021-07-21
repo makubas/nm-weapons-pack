@@ -10,6 +10,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.nm_weapons_pack.items.NmItems;
@@ -17,8 +18,8 @@ import net.nm_weapons_pack.items.weapons.helpers.config_settings.MeleeWeaponConf
 import net.nm_weapons_pack.materials.NmWeaponMaterial;
 
 public abstract class NmMeleeWeapon extends NmWeapon {
-    protected final NmWeaponMaterial material;
-    protected final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
+    protected NmWeaponMaterial material;
+    protected Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
     public NmMeleeWeapon(MeleeWeaponConfigSettings meleeWeaponConfigSettings) {
         super(new FabricItemSettings().rarity(meleeWeaponConfigSettings.getRarity()).group(NmItems.NM_WEAPONS_PACK_GROUP).maxCount(1).maxDamageIfAbsent(meleeWeaponConfigSettings.getMaterial().getDurability()));
@@ -27,10 +28,16 @@ public abstract class NmMeleeWeapon extends NmWeapon {
         builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", (double) meleeWeaponConfigSettings.getMaterial().getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
         this.attributeModifiers = builder.build();
         this.material = meleeWeaponConfigSettings.getMaterial();
+        this.rarity = meleeWeaponConfigSettings.getRarity();
     }
 
     public NmWeaponMaterial getMaterial() {
         return this.material;
+    }
+
+    @Override
+    public Rarity getRarity() {
+        return rarity;
     }
 
     @Override
