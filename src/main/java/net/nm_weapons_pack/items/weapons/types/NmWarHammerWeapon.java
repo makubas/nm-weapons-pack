@@ -1,7 +1,6 @@
 package net.nm_weapons_pack.items.weapons.types;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -10,11 +9,10 @@ import net.minecraft.world.World;
 import net.nm_weapons_pack.items.weapons.helpers.NmMeleeWeapon;
 import net.nm_weapons_pack.items.weapons.helpers.config_settings.MeleeWeaponConfigSettings;
 
-public abstract class NmSwordWeapon extends NmMeleeWeapon {
-
-    public NmSwordWeapon(MeleeWeaponConfigSettings meleeWeaponConfigSettings) {
+public class NmWarHammerWeapon extends NmMeleeWeapon implements BleedingWeapon {
+    public NmWarHammerWeapon(MeleeWeaponConfigSettings meleeWeaponConfigSettings) {
         super(meleeWeaponConfigSettings);
-        this.weaponType = NmWeaponType.SWORD;
+        this.weaponType = NmWeaponType.WAR_HAMMER;
     }
 
     @Override
@@ -33,10 +31,5 @@ public abstract class NmSwordWeapon extends NmMeleeWeapon {
             });
         }
         return true;
-    }
-
-    @Override
-    public boolean isSuitableFor(BlockState state) {
-        return state.isOf(Blocks.COBWEB);
     }
 }

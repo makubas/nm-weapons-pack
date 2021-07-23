@@ -3,8 +3,10 @@ package net.nm_weapons_pack;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.nm_weapons_pack.config.NmConfig;
+import net.nm_weapons_pack.effects.NmEffects;
 import net.nm_weapons_pack.items.NmItems;
 import net.nm_weapons_pack.materials.NmMaterials;
+import net.nm_weapons_pack.particles.NmParticles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,6 +30,8 @@ public class NmWeaponsPack implements ModInitializer {
 		// Mod elements initialization
 		NmMaterials.registerMaterials();
 		NmConfig.initConfig();
+		NmEffects.registerEffects();
+		NmParticles.registerParticles();
 		NmItems.registerItems();
 
 		logger.info("NM's Weapons Pack successfully initialized");

@@ -1,4 +1,6 @@
 {
+  "effect.nm_weapons_pack.bleeding": "Bleeding",
+
   "itemGroup.nm_weapons_pack.general": "NM's Weapons Pack",
   "item.nm_weapons_pack.test_sword": "Test Sword"
 }

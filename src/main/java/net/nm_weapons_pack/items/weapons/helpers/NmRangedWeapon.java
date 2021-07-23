@@ -2,9 +2,12 @@ package net.nm_weapons_pack.items.weapons.helpers;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
+import net.minecraft.world.World;
 import net.nm_weapons_pack.items.weapons.helpers.config_settings.RangedWeaponConfigSettings;
 import net.nm_weapons_pack.materials.NmWeaponMaterial;
 
@@ -45,8 +48,21 @@ public abstract class NmRangedWeapon extends NmWeapon {
         }
     }
 
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        ItemStack itemStack = user.getStackInHand(hand);
+        boolean bl = !user.getArrowType(itemStack).isEmpty();
+        if (!user.getAbilities().creativeMode && !bl) {
+            return TypedActionResult.fail(itemStack);
+        } else {
+            user.setCurrentHand(hand);
+            return TypedActionResult.consume(itemStack);
+        }
+    }
+
+    @Override
     public int getEnchantability() {
-        return 1;
+        return material.getEnchantability();
     }
 
     public abstract int getRange();

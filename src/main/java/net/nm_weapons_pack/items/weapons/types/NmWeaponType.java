@@ -27,7 +27,7 @@ public enum NmWeaponType {
 
     private List<Enchantment> availableEnchantments;
 
-    private NmWeaponType(Enchantment... enchantments) {
+    NmWeaponType(Enchantment... enchantments) {
         this.availableEnchantments = new ArrayList<>();
         if (this.availableEnchantments != null) {
             this.availableEnchantments.addAll(Arrays.asList(enchantments));
@@ -46,5 +46,13 @@ public enum NmWeaponType {
         }
         NmWeaponsPack.warnMsg("getWeaponType method did not found any matches for " + id + " weapon type!");
         return null;
+    }
+
+    public static boolean isDoubleHanded(NmWeaponType weaponType) {
+        if (weaponType == WAR_HAMMER || weaponType == MACE) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
