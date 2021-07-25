@@ -7,11 +7,13 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.nm_weapons_pack.NmWeaponsPack;
 import net.nm_weapons_pack.items.weapons.helpers.NmWeapon;
 import net.nm_weapons_pack.items.weapons.types.NmWeaponType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
@@ -57,5 +59,10 @@ public abstract class LivingEntityMixin extends Entity {
                 }
             }
         }
+    }
+
+    @Inject(method = "tickStatusEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;world:Lnet/minecraft/world/World;"))
+    private void tickStatusEffectMixin(CallbackInfo ci) {
+        NmWeaponsPack.warnMsg("Particle effect mixin");
     }
 }

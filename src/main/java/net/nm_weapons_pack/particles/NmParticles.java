@@ -1,19 +1,20 @@
 package net.nm_weapons_pack.particles;
 
-import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.nm_weapons_pack.utils.NmUtils;
 
 public class NmParticles {
-    //public static final DefaultParticleType BLEEDING_PARTICLE = FabricParticleTypes.simple();
+    public static DefaultParticleType BLEEDING_PARTICLE = new DefaultParticleType(false){};
 
     public static void registerParticles() {
-        //registerParticle(NmUtils.getNmId("bleeding_particle"), BLEEDING_PARTICLE);
+        ParticleFactoryRegistry.getInstance().register(BLEEDING_PARTICLE, BleedingParticle.Factory::new);
+        registerParticle(NmUtils.getNmId("bleeding_particle"), BLEEDING_PARTICLE);
     }
 
-    private static void registerParticle(Identifier id, DefaultParticleType particle) {
-        Registry.register(Registry.PARTICLE_TYPE, id, particle);
+    private static void registerParticle(Identifier id, DefaultParticleType particleType) {
+        Registry.register(Registry.PARTICLE_TYPE, id, particleType);
     }
 }
