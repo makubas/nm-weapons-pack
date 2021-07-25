@@ -4,20 +4,28 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.nm_weapons_pack.NmWeaponsPack;
+import net.nm_weapons_pack.effects.NmEffects;
 import net.nm_weapons_pack.items.weapons.helpers.NmWeapon;
 import net.nm_weapons_pack.items.weapons.types.NmWeaponType;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Map;
+
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
+
+    @Shadow public abstract Map<StatusEffect, StatusEffectInstance> getActiveStatusEffects();
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -61,8 +69,12 @@ public abstract class LivingEntityMixin extends Entity {
         }
     }
 
-    @Inject(method = "tickStatusEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;world:Lnet/minecraft/world/World;"))
+    @Inject(method = "tickStatusEffects()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;addParticle(Lnet/minecraft/particle/ParticleEffect;DDDDDD)V"), cancellable = true)
     private void tickStatusEffectMixin(CallbackInfo ci) {
         NmWeaponsPack.warnMsg("Particle effect mixin");
+        if (this.getActiveStatusEffects().containsKey(NmEffects.BLEEDING)) {
+            NmWeaponsPack.warnMsg("Entity has active bleeding effect.");
+            ci.cancel();
+        }
     }
 }

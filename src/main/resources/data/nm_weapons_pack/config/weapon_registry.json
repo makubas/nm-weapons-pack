@@ -3,8 +3,8 @@
     "enabled": true,
     "type": "sword"
   },
-  "second_test_sword": {
+  "test_war_hammer": {
     "enabled": true,
-    "type": "sword"
+    "type": "war_hammer"
   }
 }

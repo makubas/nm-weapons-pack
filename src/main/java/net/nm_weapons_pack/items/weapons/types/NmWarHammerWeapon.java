@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.nm_weapons_pack.items.weapons.helpers.NmMeleeWeapon;
 import net.nm_weapons_pack.items.weapons.helpers.config_settings.MeleeWeaponConfigSettings;
 
-public class NmWarHammerWeapon extends NmMeleeWeapon implements BleedingWeapon {
+public abstract class NmWarHammerWeapon extends NmMeleeWeapon {
     public NmWarHammerWeapon(MeleeWeaponConfigSettings meleeWeaponConfigSettings) {
         super(meleeWeaponConfigSettings);
         this.weaponType = NmWeaponType.WAR_HAMMER;

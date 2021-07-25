@@ -2,14 +2,19 @@ package net.nm_weapons_pack.particles;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.WaterFluid;
 import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.nm_weapons_pack.NmWeaponsPack;
 import net.nm_weapons_pack.utils.NmUtils;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
@@ -23,7 +28,23 @@ public class BleedingParticle extends SpriteBillboardParticle {
 
     public BleedingParticle(ClientWorld clientWorld, double x, double y, double z, double v, double v1, double v2) {
         super(clientWorld, x, y, z, v, v1, v2);
-        //this.setSprite((Sprite) MinecraftClient.getInstance().getSpriteAtlas(sprite));
+        this.setColor(0.81F, 0.2F, 0.15F);
+        this.setBoundingBoxSpacing(0.01F, 0.01F);
+        this.collidesWithWorld = true;
+        this.scale *= clientWorld.random.nextFloat() * 0.4F;
+        this.maxAge = 100;
+        this.gravityStrength = 1;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.onGround) {
+            this.collidesWithWorld = false;
+            this.y += 0.05;
+            this.setVelocity(0, 0, 0);
+            this.gravityStrength = 0;
+        }
     }
 
     @Override
@@ -42,7 +63,7 @@ public class BleedingParticle extends SpriteBillboardParticle {
         public Particle createParticle(DefaultParticleType parameters, ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             Random random = clientWorld.getRandom();
 
-            BleedingParticle particle = new BleedingParticle(clientWorld, x, y, z, velocityX * random.nextDouble() * 0.2, (1 - random.nextDouble()) * 0.03, velocityZ * random.nextDouble() * 0.2);
+            BleedingParticle particle = new BleedingParticle(clientWorld, x, y, z, velocityX * random.nextDouble() * 0.2, 1, velocityZ * random.nextDouble() * 0.2);
             particle.setSprite(this.spriteProvider);
             return particle;
         }

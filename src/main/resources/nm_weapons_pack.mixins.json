@@ -6,13 +6,13 @@
   "mixins": [
     "EnchantmentHelperMixin",
     "EnchantmentMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "PlayerEntityMixin",
+    "ServerPlayerEntityMixin"
   ],
   "client": [
-    "PlayerEntityMixin"
   ],
   "server": [
-    "ServerPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

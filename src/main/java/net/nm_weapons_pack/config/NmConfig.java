@@ -116,9 +116,8 @@ public class NmConfig {
                 }
             } else {
                 switch (fileDir) {
-                    case "sword" -> readSword(jsonObject, file);
-                    case "bow" -> readBow(jsonObject);
-                    case "war_hammer" -> readWarHammer(jsonObject);
+                    case "sword", "war_hammer" -> readMelee(jsonObject, file);
+                    case "bow" -> readRanged(jsonObject);
                     case "_materials" -> weaponMaterials.put(fileName.replace(".json", ""), getMaterialFromStats(jsonObject));
                     default -> NmWeaponsPack.warnMsg("Unknown file in config folder: " + fileName);
                 }
@@ -129,7 +128,7 @@ public class NmConfig {
         }
     }
 
-    private static void readSword(JsonObject jsonObject, File file) {
+    private static void readMelee(JsonObject jsonObject, File file) {
         NmMeleeWeaponJsonFormat weaponJson = new Gson().fromJson(jsonObject, NmMeleeWeaponJsonFormat.class);
         Identifier weaponId = NmUtils.getNmId(file.getName().replace(".json", ""));
         Rarity weaponRarity = getRarity(weaponJson.rarity);
@@ -142,11 +141,11 @@ public class NmConfig {
         weaponConfigSettings.put(weaponId, configSettings);
     }
 
-    private static void readBow(JsonObject jsonObject) {
+    private static void readRanged(JsonObject jsonObject) {
 
     }
 
-    private static void readWarHammer(JsonObject jsonObject) {
+    private static void readThrowable(JsonObject jsonObject) {
 
     }
 

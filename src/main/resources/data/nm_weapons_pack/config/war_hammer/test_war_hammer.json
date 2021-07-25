@@ -1,0 +1,15 @@
+{
+  "rarity": "epic",
+  "stats": {
+    "name": "Amethyst",
+    "miningLevel": 3,
+    "itemDurability": 1200,
+    "miningSpeed": 9.0,
+    "attackDamage": 4.0,
+    "enchantability": 20,
+    "attackSpeed": 1.5,
+    "repairIngredient": [
+      "minecraft:emerald"
+    ]
+  }
+}
