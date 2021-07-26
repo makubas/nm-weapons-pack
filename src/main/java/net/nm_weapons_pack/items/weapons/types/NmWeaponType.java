@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum NmWeaponType {
-    WAR_HAMMER(),
+    WAR_HAMMER(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
     JAVELIN(),
     SPEAR(),
     SHURIKEN(),

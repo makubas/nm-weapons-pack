@@ -2,8 +2,7 @@ package net.nm_weapons_pack.dev;
 
 import net.minecraft.util.Identifier;
 import net.nm_weapons_pack.config.NmConfig;
-import net.nm_weapons_pack.items.weapons.helpers.config_settings.MeleeWeaponConfigSettings;
-import net.nm_weapons_pack.items.weapons.types.BleedingWeapon;
+import net.nm_weapons_pack.items.weapons.types.effects.BleedingWeapon;
 import net.nm_weapons_pack.items.weapons.types.NmWarHammerWeapon;
 import net.nm_weapons_pack.utils.NmUtils;
 
