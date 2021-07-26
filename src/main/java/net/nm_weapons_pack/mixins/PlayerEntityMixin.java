@@ -35,14 +35,4 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             return itemStack.getItem();
         }
     }
-
-    @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getSweepingMultiplier(Lnet/minecraft/entity/LivingEntity;)F"))
-    public void attackMixin(Entity target, CallbackInfo info) {
-        ItemStack itemStack = this.getStackInHand(Hand.MAIN_HAND);
-        if (!this.world.isClient && itemStack.getItem() instanceof BleedingWeapon && target instanceof LivingEntity) {
-            if (this.world.random.nextFloat() <= ((BleedingWeapon) itemStack.getItem()).getBleedingProbability()) {
-                ((LivingEntity) target).addStatusEffect(new StatusEffectInstance(NmEffects.BLEEDING, 80));
-            }
-        }
-    }
 }

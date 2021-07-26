@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.nm_weapons_pack.NmWeaponsPack;
 import net.nm_weapons_pack.effects.NmEffects;
 import net.nm_weapons_pack.items.weapons.helpers.NmWeapon;
+import net.nm_weapons_pack.items.weapons.types.BleedingWeapon;
 import net.nm_weapons_pack.items.weapons.types.NmWeaponType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -71,10 +72,23 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "tickStatusEffects()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;addParticle(Lnet/minecraft/particle/ParticleEffect;DDDDDD)V"), cancellable = true)
     private void tickStatusEffectMixin(CallbackInfo ci) {
-        NmWeaponsPack.warnMsg("Particle effect mixin");
-        if (this.getActiveStatusEffects().containsKey(NmEffects.BLEEDING)) {
-            NmWeaponsPack.warnMsg("Entity has active bleeding effect.");
+        if (getActiveStatusEffects().containsKey(NmEffects.BLEEDING)) {
             ci.cancel();
+        }
+    }
+
+    @Inject(method = "damage", at = @At("HEAD"))
+    private void damageEffect(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        if (source.getAttacker() instanceof LivingEntity) {
+            if (((LivingEntity) source.getAttacker()).getMainHandStack().getItem() instanceof BleedingWeapon) {
+                boolean applyEffect = this.world.random.nextFloat() <= ((BleedingWeapon) ((LivingEntity) source.getAttacker()).getMainHandStack().getItem()).getBleedingProbability();
+                if (applyEffect && !livingEntity.hasStatusEffect(NmEffects.BLEEDING)) {
+                    livingEntity.addStatusEffect(new StatusEffectInstance(NmEffects.BLEEDING, 80, 1));
+                } else if (applyEffect && livingEntity.hasStatusEffect(NmEffects.BLEEDING)) {
+                    livingEntity.addStatusEffect(new StatusEffectInstance(NmEffects.BLEEDING, 80, livingEntity.removeStatusEffectInternal(NmEffects.BLEEDING).getAmplifier() + 1));
+                }
+            }
         }
     }
 }
