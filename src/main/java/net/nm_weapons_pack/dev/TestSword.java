@@ -32,7 +32,7 @@ public class TestSword extends NmSwordWeapon implements RightClickAbility, Passi
     public AbilityTooltip getRightClickAbilityTooltip() {
         return new AbilityTooltip(
                 "Test Right Click Ability",
-                "Heals you <hp>6HP<hp> and gives you <spe>+100% speed<spe>",
+                "Heals you <hp>6HP<hp> and giv",
                 AbilityType.RIGHT_CLICK,
                 70
         );
@@ -42,7 +42,7 @@ public class TestSword extends NmSwordWeapon implements RightClickAbility, Passi
     public AbilityTooltip getPassiveAbilityTooltip() {
         return new AbilityTooltip(
                 "Test Passive Ability",
-                "Gives you <eff>jump boost 2<eff>",
+                "Gives you <eff>jump boost 2<eff>ttttt",
                 AbilityType.PASSIVE,
                 0
         );

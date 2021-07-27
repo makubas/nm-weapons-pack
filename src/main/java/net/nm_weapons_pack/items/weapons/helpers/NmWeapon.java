@@ -63,7 +63,7 @@ public abstract class NmWeapon extends Item implements Vanishable {
     }
 
     protected void addRarityTooltip(Rarity rarity, NmWeaponType type) {
-        addTooltip((TranslatableText) new TranslatableText(rarity.toString().toUpperCase() + " " + type.toString().toUpperCase()).setStyle(NmStyle.getStyle(rarity).withBold(true)));
+        addTooltip((TranslatableText) new TranslatableText(rarity.toString().toUpperCase() + " " + type.toString().toUpperCase().replace("_", " ")).setStyle(NmStyle.getStyle(rarity).withBold(true)));
     }
 
     protected void addEmptyTooltipLine() {

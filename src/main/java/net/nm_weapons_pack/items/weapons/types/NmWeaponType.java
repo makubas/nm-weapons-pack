@@ -55,4 +55,14 @@ public enum NmWeaponType {
             return false;
         }
     }
+
+    public static String getAttackMethod(NmWeaponType weaponType) {
+        if (weaponType == WAR_HAMMER || weaponType == MACE) {
+            return "melee";
+        } else if (weaponType == BOW || weaponType == LONGBOW) {
+            return "ranged";
+        } else {
+            return null;
+        }
+    }
 }

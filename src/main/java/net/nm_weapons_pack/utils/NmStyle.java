@@ -14,9 +14,9 @@ public enum NmStyle {
     HEALTH(Style.EMPTY.withColor(13183530).withItalic(true)),
     SPEED(Style.EMPTY.withColor(2064499).withItalic(true)),
     DEFENCE(Style.EMPTY.withColor(3049263).withItalic(true)),
-    DAMAGE(Style.EMPTY.withColor(10712079)),
-    EFFECT(Style.EMPTY.withColor(12196458)),
-    SPECIAL(Style.EMPTY.withColor(11937409)),
+    DAMAGE(Style.EMPTY.withColor(10712079).withItalic(true)),
+    EFFECT(Style.EMPTY.withColor(12196458).withItalic(true)),
+    SPECIAL(Style.EMPTY.withColor(11937409).withItalic(true)),
 
     DESCRIPTION(Style.EMPTY.withColor(11053224)),
     COOLDOWN(Style.EMPTY.withColor(7237230));

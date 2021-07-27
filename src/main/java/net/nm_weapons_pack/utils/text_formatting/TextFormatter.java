@@ -65,6 +65,7 @@ public class TextFormatter {
                 }
             }
         }
+        abilityString.add(makeTextWithTag(currentString, null));
     }
 
     private TextTag getTag(String string) {
