@@ -34,7 +34,6 @@ public class TestSword extends NmSwordWeapon implements RightClickAbility, Passi
                 "Test Right Click Ability",
                 "Heals you <hp>6HP<hp> and gives you <spe>+100% speed<spe>",
                 AbilityType.RIGHT_CLICK,
-                rarity,
                 70
         );
     }
@@ -45,7 +44,6 @@ public class TestSword extends NmSwordWeapon implements RightClickAbility, Passi
                 "Test Passive Ability",
                 "Gives you <eff>jump boost 2<eff>",
                 AbilityType.PASSIVE,
-                rarity,
                 0
         );
     }

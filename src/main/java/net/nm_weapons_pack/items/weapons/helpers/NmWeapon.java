@@ -39,6 +39,10 @@ public abstract class NmWeapon extends Item implements Vanishable {
         return rarity;
     }
 
+    public List<AbilityTooltip> getImplementedAbilities() {
+        return new ArrayList<AbilityTooltip>();
+    }
+
     public NmWeaponType getWeaponType() {
         return weaponType;
     }
@@ -48,13 +52,14 @@ public abstract class NmWeapon extends Item implements Vanishable {
     }
 
     private void addAbilityTooltip(AbilityTooltip tooltip) {
-        TranslatableText weaponAbilityTitle1 = (TranslatableText) new TranslatableText("Weapon Ability: " + tooltip.title() + " ").formatted(tooltip.rarity().formatting);
-        TranslatableText weaponAbilityTitle2 = (TranslatableText) new TranslatableText(tooltip.type().toString()).formatted(Formatting.BOLD).formatted(tooltip.rarity().formatting);
+        TranslatableText weaponAbilityTitle1 = (TranslatableText) new TranslatableText("Weapon Ability: " + tooltip.title() + " ").formatted(getRarity().formatting);
+        TranslatableText weaponAbilityTitle2 = (TranslatableText) new TranslatableText(tooltip.type().toString()).formatted(Formatting.BOLD).formatted(getRarity().formatting);
         addTooltip((TranslatableText) weaponAbilityTitle1.append(weaponAbilityTitle2));
         addTooltip(tooltip.descriptionFormatted());
         if (tooltip.type() != AbilityType.PASSIVE) {
             addTooltip((TranslatableText) new TranslatableText("Cooldown: " + tooltip.cooldownSeconds() + " seconds").setStyle(NmStyle.COOLDOWN.getStyle()));
         }
+        addEmptyTooltipLine();
     }
 
     protected void addRarityTooltip(Rarity rarity, NmWeaponType type) {
@@ -68,20 +73,20 @@ public abstract class NmWeapon extends Item implements Vanishable {
     protected <T extends NmWeapon> void addAbilities(T t) {
         if (LeftClickAbility.class.isAssignableFrom(t.getClass())) {
             addAbilityTooltip(((LeftClickAbility) t).getLeftClickAbilityTooltip());
-            addEmptyTooltipLine();
         }
         if (RightClickAbility.class.isAssignableFrom(t.getClass())) {
             addAbilityTooltip(((RightClickAbility) t).getRightClickAbilityTooltip());
-            addEmptyTooltipLine();
         }
         if (PassiveAbility.class.isAssignableFrom(t.getClass())) {
             addAbilityTooltip(((PassiveAbility) t).getPassiveAbilityTooltip());
-            addEmptyTooltipLine();
         }
     }
 
     protected <T extends NmWeapon> void initializeTooltip(T t) {
         addAbilities(t);
+        for (AbilityTooltip abilityTooltip : t.getImplementedAbilities()) {
+            addAbilityTooltip(abilityTooltip);
+        }
         addRarityTooltip(t.getRarity(), t.getWeaponType());
     }
 }

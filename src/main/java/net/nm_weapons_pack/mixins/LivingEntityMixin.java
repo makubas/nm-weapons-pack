@@ -10,16 +10,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.nm_weapons_pack.effects.NmEffects;
-import net.nm_weapons_pack.effects.ShockEffect;
 import net.nm_weapons_pack.items.weapons.helpers.NmWeapon;
-import net.nm_weapons_pack.items.weapons.types.effects.BleedingWeapon;
+import net.nm_weapons_pack.abilities.implemented.BleedingWeapon;
 import net.nm_weapons_pack.items.weapons.types.NmWeaponType;
-import net.nm_weapons_pack.items.weapons.types.effects.ShockWeapon;
-import net.nm_weapons_pack.items.weapons.types.effects.VulnerabilityWeapon;
+import net.nm_weapons_pack.abilities.implemented.ShockWeapon;
+import net.nm_weapons_pack.abilities.implemented.VulnerabilityWeapon;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -105,6 +105,17 @@ public abstract class LivingEntityMixin extends Entity {
                     livingEntity.addStatusEffect(new StatusEffectInstance(NmEffects.SHOCK, 1, 1));
                 }
             }
+        }
+
+    }
+
+    @ModifyVariable(method = "damage", at = @At("HEAD"), ordinal = 0)
+    private float damageVulnerability(float amount) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        if (livingEntity.hasStatusEffect(NmEffects.VULNERABILITY)) {
+            return amount + livingEntity.getStatusEffect(NmEffects.VULNERABILITY).getAmplifier() * 3;
+        } else {
+            return amount;
         }
     }
 }
