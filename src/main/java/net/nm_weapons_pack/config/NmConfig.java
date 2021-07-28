@@ -37,13 +37,12 @@ public class NmConfig {
     private static final Map<Identifier, String> weaponTypes = new HashMap<>();
     private static final Map<Identifier, MeleeWeaponConfigSettings> weaponConfigSettings = new HashMap<>();
     private static final Map<String, NmWeaponMaterial> weaponMaterials = new HashMap<>();
-
     private static final Path configPath = FabricLoader.getInstance().getConfigDir().resolve(NmWeaponsPack.MOD_ID);
-    private static String modConfigPath;
 
     public static void initConfig() {
         NmWeaponsPack.debugMsg("Getting config data...");
 
+        String modConfigPath;
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
             modConfigPath = String.valueOf(Path.of(System.getProperty("user.dir")).getParent().resolve("src/main/resources/data/nm_weapons_pack/config/")) + "\\";
         } else {
@@ -115,11 +114,16 @@ public class NmConfig {
                     weaponTypes.put(id, weaponRegistry.type);
                 }
             } else {
-                switch (fileDir) {
-                    case "sword", "war_hammer" -> readMelee(jsonObject, file);
-                    case "bow" -> readRanged(jsonObject);
-                    case "_materials" -> weaponMaterials.put(fileName.replace(".json", ""), getMaterialFromStats(jsonObject));
-                    default -> NmWeaponsPack.warnMsg("Unknown file in config folder: " + fileName);
+                if (fileDir.equals("_materials")) {
+                    weaponMaterials.put(fileName.replace(".json", ""), getMaterialFromStats(jsonObject));
+                } else {
+                    switch (NmWeaponType.getAttackMethod(fileDir)) {
+                        case "melee" -> readMelee(jsonObject, file);
+                        case "ranged" -> readRanged(jsonObject, file);
+                        case "throwable" -> readThrowable(jsonObject, file);
+                        case "magic" -> readMagic(jsonObject, file);
+                        default -> NmWeaponsPack.warnMsg("Unknown file in config folder: " + fileName);
+                    }
                 }
             }
 
@@ -141,11 +145,15 @@ public class NmConfig {
         weaponConfigSettings.put(weaponId, configSettings);
     }
 
-    private static void readRanged(JsonObject jsonObject) {
+    private static void readRanged(JsonObject jsonObject, File file) {
 
     }
 
-    private static void readThrowable(JsonObject jsonObject) {
+    private static void readThrowable(JsonObject jsonObject, File file) {
+
+    }
+
+    private static void readMagic(JsonObject jsonObject, File file) {
 
     }
 

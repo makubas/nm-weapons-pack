@@ -1,19 +1,17 @@
 package net.nm_weapons_pack.items.weapons.types;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.nm_weapons_pack.items.weapons.helpers.NmMeleeWeapon;
-import net.nm_weapons_pack.items.weapons.helpers.config_settings.MeleeWeaponConfigSettings;
 
-public abstract class NmSwordWeapon extends NmMeleeWeapon {
-    public NmSwordWeapon(String identifierString) {
+public abstract class NmScythe extends NmMeleeWeapon {
+    public NmScythe(String identifierString) {
         super(identifierString);
-        this.weaponType = NmWeaponType.SWORD;
+        this.weaponType = NmWeaponType.SCYTHE;
     }
 
     @Override
@@ -32,10 +30,5 @@ public abstract class NmSwordWeapon extends NmMeleeWeapon {
             });
         }
         return true;
-    }
-
-    @Override
-    public boolean isSuitableFor(BlockState state) {
-        return state.isOf(Blocks.COBWEB);
     }
 }

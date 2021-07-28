@@ -13,12 +13,8 @@ import java.util.List;
 
 public class TestWarHammer extends NmWarHammerWeapon implements BleedingWeapon, ShockWeapon {
     public TestWarHammer() {
-        super(NmConfig.getWeaponConfigSettings().get(getId()));
+        super("test_war_hammer");
         initializeTooltip(this);
-    }
-
-    public static Identifier getId() {
-        return NmUtils.getNmId("test_war_hammer");
     }
 
     @Override

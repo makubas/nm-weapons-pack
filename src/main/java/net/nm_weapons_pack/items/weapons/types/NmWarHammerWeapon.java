@@ -1,17 +1,17 @@
 package net.nm_weapons_pack.items.weapons.types;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Material;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.nm_weapons_pack.items.weapons.helpers.NmMeleeWeapon;
-import net.nm_weapons_pack.items.weapons.helpers.config_settings.MeleeWeaponConfigSettings;
 
 public abstract class NmWarHammerWeapon extends NmMeleeWeapon {
-    public NmWarHammerWeapon(MeleeWeaponConfigSettings meleeWeaponConfigSettings) {
-        super(meleeWeaponConfigSettings);
+    public NmWarHammerWeapon(String identifierString) {
+        super(identifierString);
         this.weaponType = NmWeaponType.WAR_HAMMER;
     }
 
@@ -31,5 +31,10 @@ public abstract class NmWarHammerWeapon extends NmMeleeWeapon {
             });
         }
         return true;
+    }
+
+    @Override
+    public boolean isSuitableFor(BlockState state) {
+        return state.getMaterial() == Material.STONE || state.getMaterial() == Material.METAL;
     }
 }

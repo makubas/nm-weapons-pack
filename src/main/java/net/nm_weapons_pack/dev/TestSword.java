@@ -13,12 +13,8 @@ import net.nm_weapons_pack.utils.NmUtils;
 
 public class TestSword extends NmSwordWeapon implements RightClickAbility, PassiveAbility {
     public TestSword() {
-        super(NmConfig.getWeaponConfigSettings().get(getId()));
+        super("test_sword");
         initializeTooltip(this);
-    }
-
-    public static Identifier getId() {
-        return NmUtils.getNmId("test_sword");
     }
 
     @Override

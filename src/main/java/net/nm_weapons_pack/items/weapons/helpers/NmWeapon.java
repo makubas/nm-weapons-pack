@@ -8,11 +8,13 @@ import net.minecraft.item.Vanishable;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.world.World;
 import net.nm_weapons_pack.abilities.*;
 import net.nm_weapons_pack.items.weapons.types.NmWeaponType;
 import net.nm_weapons_pack.utils.NmStyle;
+import net.nm_weapons_pack.utils.NmUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.List;
 public abstract class NmWeapon extends Item implements Vanishable {
     protected Rarity rarity;
     protected NmWeaponType weaponType;
+    protected Identifier identifier;
     protected List<TranslatableText> tooltipsTexts = new ArrayList<>();
 
     public NmWeapon(FabricItemSettings settings) {
@@ -45,6 +48,10 @@ public abstract class NmWeapon extends Item implements Vanishable {
 
     public NmWeaponType getWeaponType() {
         return weaponType;
+    }
+
+    public Identifier getId() {
+        return identifier;
     }
 
     private void addTooltip(TranslatableText text) {

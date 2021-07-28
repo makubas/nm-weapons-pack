@@ -1,6 +1,7 @@
 package net.nm_weapons_pack.items.weapons.types;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.nm_weapons_pack.NmWeaponsPack;
 
@@ -9,21 +10,30 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum NmWeaponType {
-    WAR_HAMMER(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
+    SWORD(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
+            Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
+    WAR_HAMMER(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
+            Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
+    BATTLE_AXE(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
+            Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING, Enchantments.EFFICIENCY),
+    MACE(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
+            Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
+    SCYTHE(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
+            Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
+    DAGGER(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING,
+            Enchantments.SHARPNESS, Enchantments.SMITE),
+
+    BOW(),
+    LONGBOW(),
+    BLOWGUN(),
+    DISC(),
+
     JAVELIN(),
     SPEAR(),
     SHURIKEN(),
-    SWORD(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK, Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
-    BOW(),
-    LONGBOW(),
-    DART(),
-    MACE(),
+
     STAFF(),
-    DAGGER(),
-    BATTLE_AXE(),
-    KATAR(),
-    DISC(),
-    SCYTHE();
+    WAND();
 
     private List<Enchantment> availableEnchantments;
 
@@ -48,19 +58,20 @@ public enum NmWeaponType {
         return null;
     }
 
-    public static boolean isDoubleHanded(NmWeaponType weaponType) {
-        if (weaponType == WAR_HAMMER || weaponType == MACE) {
-            return true;
-        } else {
-            return false;
-        }
+    public boolean isDoubleHanded() {
+        return this == WAR_HAMMER || this == MACE || this == BATTLE_AXE;
     }
 
-    public static String getAttackMethod(NmWeaponType weaponType) {
-        if (weaponType == WAR_HAMMER || weaponType == MACE) {
+    public static String getAttackMethod(String weaponTypeString) {
+        NmWeaponType weaponType = getWeaponType(weaponTypeString);
+        if (weaponType == WAR_HAMMER || weaponType == MACE || weaponType == BATTLE_AXE || weaponType == SCYTHE || weaponType == SWORD) {
             return "melee";
-        } else if (weaponType == BOW || weaponType == LONGBOW) {
+        } else if (weaponType == BOW || weaponType == LONGBOW || weaponType == BLOWGUN || weaponType == DISC) {
             return "ranged";
+        } else if (weaponType == SPEAR || weaponType == SHURIKEN || weaponType == JAVELIN) {
+            return "throwable";
+        } else if (weaponType == WAND || weaponType == STAFF) {
+            return "magic";
         } else {
             return null;
         }

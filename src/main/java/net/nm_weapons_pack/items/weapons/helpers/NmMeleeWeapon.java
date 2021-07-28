@@ -10,22 +10,31 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.nm_weapons_pack.config.NmConfig;
 import net.nm_weapons_pack.items.NmItems;
 import net.nm_weapons_pack.items.weapons.helpers.config_settings.MeleeWeaponConfigSettings;
 import net.nm_weapons_pack.materials.NmWeaponMaterial;
+import net.nm_weapons_pack.utils.NmUtils;
 
 public abstract class NmMeleeWeapon extends NmWeapon {
     protected NmWeaponMaterial material;
     protected Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
-    public NmMeleeWeapon(MeleeWeaponConfigSettings meleeWeaponConfigSettings) {
-        super(new FabricItemSettings().rarity(meleeWeaponConfigSettings.getRarity()).group(NmItems.NM_WEAPONS_PACK_GROUP).maxCount(1).maxDamageIfAbsent(meleeWeaponConfigSettings.getMaterial().getDurability()));
+    public NmMeleeWeapon(String identifierString) {
+        super(new FabricItemSettings()
+                .rarity(NmConfig.getWeaponConfigSettings().get(NmUtils.getNmId(identifierString)).getRarity())
+                .group(NmItems.NM_WEAPONS_PACK_GROUP)
+                .maxCount(1)
+                .maxDamageIfAbsent((NmConfig.getWeaponConfigSettings().get(NmUtils.getNmId(identifierString)).getMaterial().getDurability())));
+        MeleeWeaponConfigSettings meleeWeaponConfigSettings = NmConfig.getWeaponConfigSettings().get(NmUtils.getNmId(identifierString));
         ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", (double) meleeWeaponConfigSettings.getMaterial().getAttackDamage(), EntityAttributeModifier.Operation.ADDITION));
         builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", (double) meleeWeaponConfigSettings.getMaterial().getAttackSpeed(), EntityAttributeModifier.Operation.ADDITION));
+        this.identifier = NmUtils.getNmId(identifierString);
         this.attributeModifiers = builder.build();
         this.material = meleeWeaponConfigSettings.getMaterial();
         this.rarity = meleeWeaponConfigSettings.getRarity();

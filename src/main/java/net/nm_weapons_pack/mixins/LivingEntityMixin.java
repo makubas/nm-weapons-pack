@@ -39,7 +39,7 @@ public abstract class LivingEntityMixin extends Entity {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         ItemStack itemStack = livingEntity.getMainHandStack();
         if (itemStack.getItem() instanceof NmWeapon) {
-            if (NmWeaponType.isDoubleHanded(((NmWeapon) itemStack.getItem()).getWeaponType())) {
+            if ((((NmWeapon) itemStack.getItem()).getWeaponType()).isDoubleHanded()) {
                 info.setReturnValue(10);
             }
         }
@@ -50,7 +50,7 @@ public abstract class LivingEntityMixin extends Entity {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         ItemStack itemStack = livingEntity.getMainHandStack();
         if (itemStack.getItem() instanceof NmWeapon) {
-            if (NmWeaponType.isDoubleHanded(((NmWeapon) itemStack.getItem()).getWeaponType())) {
+            if ((((NmWeapon) itemStack.getItem()).getWeaponType()).isDoubleHanded()) {
                 info.setReturnValue(false);
             }
         }
@@ -61,7 +61,7 @@ public abstract class LivingEntityMixin extends Entity {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         ItemStack itemStack = livingEntity.getMainHandStack();
         if (itemStack.getItem() instanceof NmWeapon) {
-            if (NmWeaponType.isDoubleHanded(((NmWeapon) itemStack.getItem()).getWeaponType())) {
+            if ((((NmWeapon) itemStack.getItem()).getWeaponType()).isDoubleHanded()) {
                 if (livingEntity instanceof PlayerEntity) {
                     ((PlayerEntity) livingEntity).getItemCooldownManager().set(itemStack.getItem(), 5);
                 }

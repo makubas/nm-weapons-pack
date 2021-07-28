@@ -23,8 +23,8 @@ public class NmItems {
 
     // Actual item registry
     public static void registerItems() {
-        registerItem(TestSword.getId(), TEST_SWORD);
-        registerItem(TestWarHammer.getId(), TEST_WAR_HAMMER);
+        registerItem(TEST_SWORD.getId(), TEST_SWORD);
+        registerItem(TEST_WAR_HAMMER.getId(), TEST_WAR_HAMMER);
     }
 
     private static void registerItem(Identifier id, Item item) {
