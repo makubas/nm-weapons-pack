@@ -13,6 +13,7 @@ public abstract class NmBattleAxe extends NmMeleeWeapon {
     public NmBattleAxe(String identifierString) {
         super(identifierString);
         this.weaponType = NmWeaponType.BATTLE_AXE;
+        initializeTooltip(this);
     }
 
     @Override

@@ -12,6 +12,7 @@ public abstract class NmMaceWeapon extends NmMeleeWeapon {
     public NmMaceWeapon(String identifierString) {
         super(identifierString);
         this.weaponType = NmWeaponType.MACE;
+        initializeTooltip(this);
     }
 
     @Override

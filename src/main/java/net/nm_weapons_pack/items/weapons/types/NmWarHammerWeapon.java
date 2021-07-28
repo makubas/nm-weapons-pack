@@ -13,6 +13,7 @@ public abstract class NmWarHammerWeapon extends NmMeleeWeapon {
     public NmWarHammerWeapon(String identifierString) {
         super(identifierString);
         this.weaponType = NmWeaponType.WAR_HAMMER;
+        initializeTooltip(this);
     }
 
     @Override

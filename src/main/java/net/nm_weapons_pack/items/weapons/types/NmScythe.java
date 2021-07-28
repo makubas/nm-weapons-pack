@@ -12,6 +12,7 @@ public abstract class NmScythe extends NmMeleeWeapon {
     public NmScythe(String identifierString) {
         super(identifierString);
         this.weaponType = NmWeaponType.SCYTHE;
+        initializeTooltip(this);
     }
 
     @Override

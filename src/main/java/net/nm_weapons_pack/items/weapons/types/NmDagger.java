@@ -12,6 +12,7 @@ public abstract class NmDagger extends NmMeleeWeapon {
     public NmDagger(String identifierString) {
         super(identifierString);
         this.weaponType = NmWeaponType.DAGGER;
+        initializeTooltip(this);
     }
 
     @Override

@@ -14,6 +14,7 @@ public abstract class NmSwordWeapon extends NmMeleeWeapon {
     public NmSwordWeapon(String identifierString) {
         super(identifierString);
         this.weaponType = NmWeaponType.SWORD;
+        initializeTooltip(this);
     }
 
     @Override

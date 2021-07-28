@@ -14,7 +14,6 @@ import net.nm_weapons_pack.utils.NmUtils;
 public class TestSword extends NmSwordWeapon implements RightClickAbility, PassiveAbility {
     public TestSword() {
         super("test_sword");
-        initializeTooltip(this);
     }
 
     @Override
