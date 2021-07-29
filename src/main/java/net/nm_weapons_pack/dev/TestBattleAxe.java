@@ -1,7 +1,6 @@
 package net.nm_weapons_pack.dev;
 
-import net.minecraft.block.Block;
-import net.nm_weapons_pack.items.weapons.types.NmBattleAxe;
+import net.nm_weapons_pack.items.weapons.types.melee.NmBattleAxe;
 
 public class TestBattleAxe extends NmBattleAxe {
     public TestBattleAxe() {

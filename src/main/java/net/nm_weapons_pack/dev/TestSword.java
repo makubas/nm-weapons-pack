@@ -3,15 +3,12 @@ package net.nm_weapons_pack.dev;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.nm_weapons_pack.abilities.*;
-import net.nm_weapons_pack.config.NmConfig;
-import net.nm_weapons_pack.items.weapons.types.NmSwordWeapon;
-import net.nm_weapons_pack.utils.NmUtils;
+import net.nm_weapons_pack.items.weapons.types.melee.NmSword;
 
-public class TestSword extends NmSwordWeapon implements RightClickAbility, PassiveAbility {
+public class TestSword extends NmSword implements RightClickAbility, PassiveAbility {
     public TestSword() {
         super("test_sword");
     }

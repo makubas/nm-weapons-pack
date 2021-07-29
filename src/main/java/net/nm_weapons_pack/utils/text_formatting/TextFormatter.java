@@ -50,7 +50,7 @@ public class TextFormatter {
                             currentStartingTag = null;
                             currentString = "";
                         } else {
-                            NmWeaponsPack.warnMsg("Can't mix tags inside!");
+                            NmWeaponsPack.warnMsg("Can'.gitkeep mix tags inside!");
                             throw new RuntimeException();
                         }
                         skippingTag = true;

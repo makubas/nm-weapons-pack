@@ -12,11 +12,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 import net.nm_weapons_pack.NmWeaponsPack;
-import net.nm_weapons_pack.config.json_formats.NmMeleeWeaponJsonFormat;
-import net.nm_weapons_pack.config.json_formats.NmWeaponJsonFormat;
-import net.nm_weapons_pack.config.json_formats.NmWeaponRegistryJsonFormat;
-import net.nm_weapons_pack.config.json_formats.NmStatsJsonFormat;
+import net.nm_weapons_pack.config.json_formats.*;
+import net.nm_weapons_pack.items.weapons.helpers.config_settings.MagicWeaponConfigSettings;
 import net.nm_weapons_pack.items.weapons.helpers.config_settings.MeleeWeaponConfigSettings;
+import net.nm_weapons_pack.items.weapons.helpers.config_settings.RangedWeaponConfigSettings;
+import net.nm_weapons_pack.items.weapons.helpers.config_settings.ThrowableWeaponConfigSettings;
 import net.nm_weapons_pack.items.weapons.types.NmWeaponType;
 import net.nm_weapons_pack.materials.NmMaterials;
 import net.nm_weapons_pack.materials.NmWeaponMaterial;
@@ -35,7 +35,10 @@ import java.util.Map;
 public class NmConfig {
     private static final Map<Identifier, Boolean> enabledWeapons = new HashMap<>();
     private static final Map<Identifier, String> weaponTypes = new HashMap<>();
-    private static final Map<Identifier, MeleeWeaponConfigSettings> weaponConfigSettings = new HashMap<>();
+    private static final Map<Identifier, MeleeWeaponConfigSettings> meleeWeaponConfigSettings = new HashMap<>();
+    private static final Map<Identifier, RangedWeaponConfigSettings> rangedWeaponConfigSettings = new HashMap<>();
+    private static final Map<Identifier, ThrowableWeaponConfigSettings> throwableWeaponConfigSettings = new HashMap<>();
+    private static final Map<Identifier, MagicWeaponConfigSettings> magicWeaponConfigSettings = new HashMap<>();
     private static final Map<String, NmWeaponMaterial> weaponMaterials = new HashMap<>();
     private static final Path configPath = FabricLoader.getInstance().getConfigDir().resolve(NmWeaponsPack.MOD_ID);
 
@@ -44,7 +47,7 @@ public class NmConfig {
 
         String modConfigPath;
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            modConfigPath = String.valueOf(Path.of(System.getProperty("user.dir")).getParent().resolve("src/main/resources/data/nm_weapons_pack/config/")) + "\\";
+            modConfigPath = Path.of(System.getProperty("user.dir")).getParent().resolve("src/main/resources/data/nm_weapons_pack/config/") + "\\";
         } else {
             modConfigPath = "/data/nm_weapons_pack/config/";
         }
@@ -142,7 +145,7 @@ public class NmConfig {
             NmWeaponsPack.warnMsg(file.getName() + " in config folder is corrupted!");
         }
         MeleeWeaponConfigSettings configSettings = new MeleeWeaponConfigSettings(weaponRarity, material);
-        weaponConfigSettings.put(weaponId, configSettings);
+        meleeWeaponConfigSettings.put(weaponId, configSettings);
     }
 
     private static void readRanged(JsonObject jsonObject, File file) {
@@ -150,7 +153,18 @@ public class NmConfig {
     }
 
     private static void readThrowable(JsonObject jsonObject, File file) {
-
+        NmThrowableWeaponJsonFormat weaponJson = new Gson().fromJson(jsonObject, NmThrowableWeaponJsonFormat.class);
+        Identifier weaponId = NmUtils.getNmId(file.getName().replace(".json", ""));
+        Rarity weaponRarity = getRarity(weaponJson.rarity);
+        int stackCount = weaponJson.stackCount;
+        int maxUseTime = weaponJson.maxUseTime;
+        NmWeaponMaterial material = getMaterialOrStats(weaponJson);
+        if (material == null) {
+            enabledWeapons.replace(weaponId, false);
+            NmWeaponsPack.warnMsg(file.getName() + " in config folder is corrupted!");
+        }
+        ThrowableWeaponConfigSettings configSettings = new ThrowableWeaponConfigSettings(weaponRarity, material, stackCount, maxUseTime);
+        throwableWeaponConfigSettings.put(weaponId, configSettings);
     }
 
     private static void readMagic(JsonObject jsonObject, File file) {
@@ -170,7 +184,7 @@ public class NmConfig {
     private static NmWeaponMaterial getMaterialFromStats(JsonObject stats) {
         // Getting WeaponMaterial from json stats
         NmStatsJsonFormat statsJson = new Gson().fromJson(stats, NmStatsJsonFormat.class);
-        List<Item> ingredientSupplier = new ArrayList<Item>();
+        List<Item> ingredientSupplier = new ArrayList<>();
         for (int i = 0; i < statsJson.repairIngredient.getAsJsonArray().size(); i++) {
             Item item = Registry.ITEM.get(Identifier.tryParse(statsJson.repairIngredient.getAsJsonArray().get(i).getAsString()));
             ingredientSupplier.add(item);
@@ -191,13 +205,12 @@ public class NmConfig {
     }
 
     private static Rarity getRarity(String rarity) {
-        Rarity weaponRarity = switch (rarity) {
+        return switch (rarity) {
             case "epic" -> Rarity.EPIC;
             case "rare" -> Rarity.RARE;
             case "uncommon" -> Rarity.UNCOMMON;
             default -> Rarity.COMMON;
         };
-        return weaponRarity;
     }
 
     private static void copyFileFromConfig(String from, String to) {
@@ -214,7 +227,7 @@ public class NmConfig {
                     Files.copy(source, Paths.get(to), StandardCopyOption.REPLACE_EXISTING);
                 }
             } catch (IOException e) {
-                NmWeaponsPack.warnMsg("Error while copying file: " + e.toString());
+                NmWeaponsPack.warnMsg("Error while copying file: " + e);
             }
         }
     }
@@ -235,8 +248,20 @@ public class NmConfig {
         return enabledWeapons;
     }
 
-    public static Map<Identifier, MeleeWeaponConfigSettings> getWeaponConfigSettings() {
-        return weaponConfigSettings;
+    public static Map<Identifier, MeleeWeaponConfigSettings> getMeleeWeaponConfigSettings() {
+        return meleeWeaponConfigSettings;
+    }
+
+    public static Map<Identifier, RangedWeaponConfigSettings> getRangedWeaponConfigSettings() {
+        return rangedWeaponConfigSettings;
+    }
+
+    public static Map<Identifier, ThrowableWeaponConfigSettings> getThrowableWeaponConfigSettings() {
+        return throwableWeaponConfigSettings;
+    }
+
+    public static Map<Identifier, MagicWeaponConfigSettings> getMagicWeaponConfigSettings() {
+        return magicWeaponConfigSettings;
     }
 
     public static Map<String, NmWeaponMaterial> weaponMaterials() {

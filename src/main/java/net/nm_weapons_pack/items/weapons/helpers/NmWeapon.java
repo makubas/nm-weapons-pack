@@ -1,7 +1,9 @@
 package net.nm_weapons_pack.items.weapons.helpers;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Vanishable;
@@ -10,6 +12,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.nm_weapons_pack.abilities.*;
 import net.nm_weapons_pack.items.weapons.types.NmWeaponType;
@@ -36,6 +39,11 @@ public abstract class NmWeapon extends Item implements Vanishable {
             tooltip.add(text);
         }
         super.appendTooltip(stack, world, tooltip, context);
+    }
+
+    @Override
+    public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
+        return !miner.isCreative();
     }
 
     protected Rarity getRarity() {

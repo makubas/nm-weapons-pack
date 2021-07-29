@@ -28,6 +28,7 @@ public enum NmWeaponType {
     BLOWGUN(),
     DISC(),
 
+    TRIDENT(),
     JAVELIN(),
     SPEAR(),
     SHURIKEN(),
