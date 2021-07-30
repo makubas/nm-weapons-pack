@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 import net.nm_weapons_pack.effects.NmEffects;
 import net.nm_weapons_pack.items.weapons.helpers.NmWeapon;
 import net.nm_weapons_pack.abilities.implemented.BleedingWeapon;
-import net.nm_weapons_pack.items.weapons.types.NmWeaponType;
 import net.nm_weapons_pack.abilities.implemented.ShockWeapon;
 import net.nm_weapons_pack.abilities.implemented.VulnerabilityWeapon;
 import org.spongepowered.asm.mixin.Mixin;

@@ -6,5 +6,9 @@
   "test_war_hammer": {
     "enabled": true,
     "type": "war_hammer"
+  },
+  "test_trident": {
+    "enabled": true,
+    "type": "trident"
   }
 }

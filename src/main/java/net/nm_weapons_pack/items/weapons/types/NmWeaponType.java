@@ -10,43 +10,61 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum NmWeaponType {
-    SWORD(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
+    SWORD(NmAttackMethod.MELEE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
             Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
-    WAR_HAMMER(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
+    WAR_HAMMER(NmAttackMethod.MELEE, true, Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
             Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
-    BATTLE_AXE(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
+    BATTLE_AXE(NmAttackMethod.MELEE, true, Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
             Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING, Enchantments.EFFICIENCY),
-    MACE(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
+    MACE(NmAttackMethod.MELEE, true, Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
             Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
-    SCYTHE(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
+    SCYTHE(NmAttackMethod.MELEE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
             Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
-    DAGGER(Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING,
+    DAGGER(NmAttackMethod.MELEE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING,
             Enchantments.SHARPNESS, Enchantments.SMITE),
 
-    BOW(),
-    LONGBOW(),
-    BLOWGUN(),
-    DISC(),
+    BOW(NmAttackMethod.RANGED),
+    LONGBOW(NmAttackMethod.RANGED),
+    BLOWGUN(NmAttackMethod.RANGED),
+    DISC(NmAttackMethod.RANGED),
 
-    TRIDENT(),
-    JAVELIN(),
-    SPEAR(),
-    SHURIKEN(),
+    TRIDENT(NmAttackMethod.THROWABLE),
+    JAVELIN(NmAttackMethod.THROWABLE),
+    SPEAR(NmAttackMethod.THROWABLE),
+    SHURIKEN(NmAttackMethod.THROWABLE),
 
-    STAFF(),
-    WAND();
+    STAFF(NmAttackMethod.MAGIC),
+    WAND(NmAttackMethod.MAGIC);
 
-    private List<Enchantment> availableEnchantments;
+    private final List<Enchantment> availableEnchantments;
+    private final NmAttackMethod attackMethod;
+    private final boolean doubleHanded;
 
-    NmWeaponType(Enchantment... enchantments) {
+    NmWeaponType(NmAttackMethod attackMethod, Enchantment... enchantments) {
+        this.doubleHanded = false;
+        this.attackMethod = attackMethod;
         this.availableEnchantments = new ArrayList<>();
-        if (this.availableEnchantments != null) {
-            this.availableEnchantments.addAll(Arrays.asList(enchantments));
-        }
+        this.availableEnchantments.addAll(Arrays.asList(enchantments));
     }
+
+    NmWeaponType(NmAttackMethod attackMethod, boolean doubleHanded, Enchantment... enchantments) {
+        this.attackMethod = attackMethod;
+        this.doubleHanded = doubleHanded;
+        this.availableEnchantments = new ArrayList<>();
+        this.availableEnchantments.addAll(Arrays.asList(enchantments));
+    }
+
 
     public List<Enchantment> getAvailableEnchantments() {
         return this.availableEnchantments;
+    }
+
+    public NmAttackMethod getAttackMethod() {
+        return attackMethod;
+    }
+
+    public boolean isDoubleHanded() {
+        return this.doubleHanded;
     }
 
     public static NmWeaponType getWeaponType(String id) {
@@ -55,24 +73,13 @@ public enum NmWeaponType {
                 return type;
             }
         }
-        NmWeaponsPack.warnMsg("getWeaponType method did not found any matches for " + id + " weapon type!");
         return null;
-    }
-
-    public boolean isDoubleHanded() {
-        return this == WAR_HAMMER || this == MACE || this == BATTLE_AXE;
     }
 
     public static String getAttackMethod(String weaponTypeString) {
         NmWeaponType weaponType = getWeaponType(weaponTypeString);
-        if (weaponType == WAR_HAMMER || weaponType == MACE || weaponType == BATTLE_AXE || weaponType == SCYTHE || weaponType == SWORD) {
-            return "melee";
-        } else if (weaponType == BOW || weaponType == LONGBOW || weaponType == BLOWGUN || weaponType == DISC) {
-            return "ranged";
-        } else if (weaponType == SPEAR || weaponType == SHURIKEN || weaponType == JAVELIN) {
-            return "throwable";
-        } else if (weaponType == WAND || weaponType == STAFF) {
-            return "magic";
+        if (weaponType != null) {
+            return weaponType.getAttackMethod().toString();
         } else {
             return null;
         }

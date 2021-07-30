@@ -1,11 +1,10 @@
-package net.nm_weapons_pack.items.weapons.types.throwable;
+package net.nm_weapons_pack.items.weapons.types.throwable.trident;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -38,7 +37,7 @@ public abstract class NmTrident extends NmThrowableWeapon {
                             p.sendToolBreakStatus(user.getActiveHand());
                         });
                         if (j == 0) {
-                            TridentEntity tridentEntity = new TridentEntity(world, playerEntity, stack);
+                            NmTridentEntity tridentEntity = new NmTridentEntity(world, playerEntity, stack);
                             tridentEntity.setProperties(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2.5F + (float)j * 0.5F, 1.0F);
                             if (playerEntity.getAbilities().creativeMode) {
                                 tridentEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
