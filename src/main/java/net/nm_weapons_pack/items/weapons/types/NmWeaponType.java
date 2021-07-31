@@ -3,6 +3,7 @@ package net.nm_weapons_pack.items.weapons.types;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.BowItem;
 import net.nm_weapons_pack.NmWeaponsPack;
 
 import java.util.ArrayList;

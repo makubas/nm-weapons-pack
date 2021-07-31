@@ -8,7 +8,7 @@
     "type": "war_hammer"
   },
   "test_trident": {
-    "enabled": true,
+    "enabled": false,
     "type": "trident"
   }
 }

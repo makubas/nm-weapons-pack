@@ -6,9 +6,13 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.nm_weapons_pack.abilities.*;
+import net.nm_weapons_pack.abilities.implemented.ShockWeapon;
 import net.nm_weapons_pack.items.weapons.types.melee.NmSword;
 
-public class TestSword extends NmSword implements RightClickAbility, PassiveAbility {
+import java.util.ArrayList;
+import java.util.List;
+
+public class TestSword extends NmSword implements RightClickAbility, PassiveAbility, ShockWeapon {
     public TestSword() {
         super("test_sword");
     }
@@ -18,6 +22,13 @@ public class TestSword extends NmSword implements RightClickAbility, PassiveAbil
         user.heal(6f);
         user.getItemCooldownManager().set(user.getStackInHand(hand).getItem(), 70);
         return super.use(world, user, hand);
+    }
+
+    @Override
+    public List<AbilityTooltip> getImplementedAbilities() {
+        return new ArrayList<>() {{
+            add(ShockWeapon.getTooltip());
+        }};
     }
 
     @Override
@@ -38,5 +49,10 @@ public class TestSword extends NmSword implements RightClickAbility, PassiveAbil
                 AbilityType.PASSIVE,
                 0
         );
+    }
+
+    @Override
+    public float getShockProbability() {
+        return 0.5F;
     }
 }

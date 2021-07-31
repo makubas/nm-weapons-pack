@@ -8,7 +8,7 @@ import net.nm_weapons_pack.items.weapons.types.melee.NmWarHammer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestWarHammer extends NmWarHammer implements BleedingWeapon, ShockWeapon {
+public class TestWarHammer extends NmWarHammer implements BleedingWeapon {
     public TestWarHammer() {
         super("test_war_hammer");
     }
@@ -17,18 +17,12 @@ public class TestWarHammer extends NmWarHammer implements BleedingWeapon, ShockW
     public List<AbilityTooltip> getImplementedAbilities() {
        return new ArrayList<>() {{
            add(BleedingWeapon.getTooltip());
-           add(ShockWeapon.getTooltip());
        }};
     }
 
     @Override
     public float getBleedingProbability() {
-        return 0.4F;
-    }
-
-    @Override
-    public float getShockProbability() {
-        return 0.4F;
+        return 1F;
     }
 }
 

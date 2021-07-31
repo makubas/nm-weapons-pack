@@ -29,7 +29,7 @@ public class BleedingParticle extends SpriteBillboardParticle {
     public BleedingParticle(ClientWorld clientWorld, double x, double y, double z, double v, double v1, double v2) {
         super(clientWorld, x, y, z, v, v1, v2);
         Random random = clientWorld.getRandom();
-        this.setColor(0.81F + random.nextFloat() * 0.1f, 0.2F, 0.15F + random.nextFloat() * 0.1f);
+        this.setColor(0.56F + random.nextFloat() * 0.1f, 0.12F + random.nextFloat() * 0.1f, 0.12F + random.nextFloat() * 0.1f);
         this.setBoundingBoxSpacing(0.01F, 0.01F);
         this.collidesWithWorld = true;
         this.scale *= clientWorld.random.nextFloat() * 0.4F;
@@ -42,7 +42,7 @@ public class BleedingParticle extends SpriteBillboardParticle {
         super.tick();
         if (this.onGround) {
             this.collidesWithWorld = false;
-            this.y += 0.05;
+            this.y += 0.02;
             this.setVelocity(0, 0, 0);
             this.gravityStrength = 0;
         }

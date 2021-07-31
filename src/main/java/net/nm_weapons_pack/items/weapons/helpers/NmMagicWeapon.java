@@ -15,22 +15,26 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.nm_weapons_pack.abilities.*;
+import net.nm_weapons_pack.items.weapons.helpers.config_settings.MagicWeaponConfigSettings;
+import net.nm_weapons_pack.items.weapons.types.NmAttackMethod;
 import net.nm_weapons_pack.items.weapons.types.NmWeaponType;
+import net.nm_weapons_pack.materials.NmWeaponMaterial;
 import net.nm_weapons_pack.utils.NmStyle;
-import net.nm_weapons_pack.utils.NmUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class NmWeapon extends Item implements Vanishable {
+public abstract class NmMagicWeapon extends Item implements Vanishable {
     protected Rarity rarity;
     protected NmWeaponType weaponType;
     protected Identifier identifier;
+    protected NmWeaponMaterial material;
+    protected final NmAttackMethod attackMethod = NmAttackMethod.MAGIC;
     protected List<TranslatableText> tooltipsTexts = new ArrayList<>();
 
-    public NmWeapon(FabricItemSettings settings) {
-        super(settings);
+    public NmMagicWeapon(MagicWeaponConfigSettings weaponConfigSettings) {
+        super(new FabricItemSettings());
     }
 
     @Override
@@ -62,6 +66,10 @@ public abstract class NmWeapon extends Item implements Vanishable {
         return identifier;
     }
 
+    public NmAttackMethod getAttackMethod() {
+        return attackMethod;
+    }
+
     private void addTooltip(TranslatableText text) {
         tooltipsTexts.add(text);
     }
@@ -85,7 +93,7 @@ public abstract class NmWeapon extends Item implements Vanishable {
         addTooltip(new TranslatableText(""));
     }
 
-    protected <T extends NmWeapon> void addAbilities(T t) {
+    protected <T extends NmMagicWeapon> void addAbilities(T t) {
         if (LeftClickAbility.class.isAssignableFrom(t.getClass())) {
             addAbilityTooltip(((LeftClickAbility) t).getLeftClickAbilityTooltip());
         }
@@ -97,7 +105,7 @@ public abstract class NmWeapon extends Item implements Vanishable {
         }
     }
 
-    protected <T extends NmWeapon> void initializeTooltip(T t) {
+    protected <T extends NmMagicWeapon> void initializeTooltip(T t) {
         addAbilities(t);
         for (AbilityTooltip abilityTooltip : t.getImplementedAbilities()) {
             addAbilityTooltip(abilityTooltip);
