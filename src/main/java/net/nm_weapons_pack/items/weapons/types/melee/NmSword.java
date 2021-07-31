@@ -7,9 +7,7 @@ import net.nm_weapons_pack.items.weapons.types.NmWeaponType;
 
 public abstract class NmSword extends NmMeleeWeapon {
     public NmSword(String identifierString) {
-        super(identifierString);
-        this.weaponType = NmWeaponType.SWORD;
-        initializeTooltip(this);
+        super(identifierString, NmWeaponType.SWORD);
     }
 
     @Override

@@ -33,8 +33,10 @@ public abstract class NmMagicWeapon extends Item implements Vanishable {
     protected final NmAttackMethod attackMethod = NmAttackMethod.MAGIC;
     protected List<TranslatableText> tooltipsTexts = new ArrayList<>();
 
-    public NmMagicWeapon(MagicWeaponConfigSettings weaponConfigSettings) {
+    public NmMagicWeapon(MagicWeaponConfigSettings weaponConfigSettings, NmWeaponType weaponType) {
         super(new FabricItemSettings());
+        this.weaponType  = weaponType;
+        initializeTooltip(this);
     }
 
     @Override

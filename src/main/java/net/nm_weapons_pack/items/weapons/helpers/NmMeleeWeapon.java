@@ -36,7 +36,7 @@ public abstract class NmMeleeWeapon extends SwordItem implements Vanishable {
     protected final NmAttackMethod attackMethod = NmAttackMethod.MELEE;
     protected List<TranslatableText> tooltipsTexts = new ArrayList<>();
 
-    public NmMeleeWeapon(String identifierString) {
+    public NmMeleeWeapon(String identifierString, NmWeaponType weaponType) {
         super(NmConfig.getMeleeWeaponConfigSettings().get(NmUtils.getNmId(identifierString)).getMaterial(), 3, -2.4F,
                 new FabricItemSettings()
                         .maxCount(1)
@@ -47,6 +47,8 @@ public abstract class NmMeleeWeapon extends SwordItem implements Vanishable {
         this.identifier = NmUtils.getNmId(identifierString);
         this.material = meleeWeaponConfigSettings.getMaterial();
         this.rarity = meleeWeaponConfigSettings.getRarity();
+        this.weaponType  = weaponType;
+        initializeTooltip(this);
     }
 
     @Override

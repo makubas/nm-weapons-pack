@@ -37,7 +37,7 @@ public abstract class NmRangedWeapon extends RangedWeaponItem implements Vanisha
     protected final NmAttackMethod attackMethod = NmAttackMethod.RANGED;
     protected List<TranslatableText> tooltipsTexts = new ArrayList<>();
 
-    public NmRangedWeapon(String identifierString) {
+    public NmRangedWeapon(String identifierString, NmWeaponType weaponType) {
         super(new FabricItemSettings()
                 .maxCount(1)
                 .group(NmItems.NM_WEAPONS_PACK_GROUP)
@@ -47,6 +47,8 @@ public abstract class NmRangedWeapon extends RangedWeaponItem implements Vanisha
         this.identifier = NmUtils.getNmId(identifierString);
         this.material = rangedWeaponConfigSettings.getMaterial();
         this.rarity = rangedWeaponConfigSettings.getRarity();
+        this.weaponType  = weaponType;
+        initializeTooltip(this);
     }
 
     @Override

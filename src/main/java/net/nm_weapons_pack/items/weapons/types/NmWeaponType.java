@@ -11,28 +11,22 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum NmWeaponType {
-    SWORD(NmAttackMethod.MELEE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
-            Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
-    WAR_HAMMER(NmAttackMethod.MELEE, true, Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
-            Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
-    BATTLE_AXE(NmAttackMethod.MELEE, true, Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
-            Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING, Enchantments.EFFICIENCY),
-    MACE(NmAttackMethod.MELEE, true, Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
-            Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
-    SCYTHE(NmAttackMethod.MELEE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING, Enchantments.KNOCKBACK,
-            Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.SWEEPING),
-    DAGGER(NmAttackMethod.MELEE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.FIRE_ASPECT, Enchantments.LOOTING,
-            Enchantments.SHARPNESS, Enchantments.SMITE),
-
-    BOW(NmAttackMethod.RANGED),
-    LONGBOW(NmAttackMethod.RANGED),
-    BLOWGUN(NmAttackMethod.RANGED),
-    DISC(NmAttackMethod.RANGED),
+    SWORD(NmAttackMethod.MELEE),
+    WAR_HAMMER(NmAttackMethod.MELEE, true, Enchantments.EFFICIENCY),
+    BATTLE_AXE(NmAttackMethod.MELEE, Enchantments.EFFICIENCY),
+    MACE(NmAttackMethod.MELEE, true),
+    SCYTHE(NmAttackMethod.MELEE),
+    DAGGER(NmAttackMethod.MELEE),
 
     TRIDENT(NmAttackMethod.THROWABLE),
     JAVELIN(NmAttackMethod.THROWABLE),
     SPEAR(NmAttackMethod.THROWABLE),
+    DISC(NmAttackMethod.THROWABLE),
     SHURIKEN(NmAttackMethod.THROWABLE),
+
+    BOW(NmAttackMethod.RANGED),
+    LONGBOW(NmAttackMethod.RANGED),
+    BLOWGUN(NmAttackMethod.RANGED),
 
     STAFF(NmAttackMethod.MAGIC),
     WAND(NmAttackMethod.MAGIC);

@@ -11,7 +11,11 @@ import net.nm_weapons_pack.config.NmConfig;
 import net.nm_weapons_pack.dev.TestSword;
 import net.nm_weapons_pack.dev.TestTrident;
 import net.nm_weapons_pack.dev.TestWarHammer;
+import net.nm_weapons_pack.items.weapons.helpers.NmThrowableWeapon;
 import net.nm_weapons_pack.utils.NmUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NmItems {
     public static final ItemGroup NM_WEAPONS_PACK_GROUP = FabricItemGroupBuilder.build(
@@ -22,6 +26,10 @@ public class NmItems {
     public static final TestSword TEST_SWORD = new TestSword();
     public static final TestWarHammer TEST_WAR_HAMMER = new TestWarHammer();
     public static final TestTrident TEST_TRIDENT = new TestTrident();
+
+    public static final List<? extends NmThrowableWeapon> ALL_TRIDENTS = new ArrayList<>() {{
+        add(TEST_TRIDENT);
+    }};
 
     // Actual item registry
     public static void registerItems() {

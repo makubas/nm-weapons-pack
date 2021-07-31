@@ -5,8 +5,6 @@ import net.nm_weapons_pack.items.weapons.types.NmWeaponType;
 
 public abstract class NmMace extends NmMeleeWeapon {
     public NmMace(String identifierString) {
-        super(identifierString);
-        this.weaponType = NmWeaponType.MACE;
-        initializeTooltip(this);
+        super(identifierString, NmWeaponType.MACE);
     }
 }

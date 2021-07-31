@@ -1,6 +1,7 @@
 package net.nm_weapons_pack.items.weapons.types.throwable.trident;
 
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,18 +11,16 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.nm_weapons_pack.items.weapons.helpers.NmThrowableWeapon;
+import net.nm_weapons_pack.items.weapons.helpers.NmThrowableWeaponEntity;
 import net.nm_weapons_pack.items.weapons.types.NmWeaponType;
 
 public abstract class NmTrident extends NmThrowableWeapon {
-    public NmTrident(String identifierString) {
-        super(identifierString);
-        this.weaponType = NmWeaponType.TRIDENT;
-        initializeTooltip(this);
+    public NmTrident(String identifierString, EntityType<? extends NmThrowableWeaponEntity> entityType) {
+        super(identifierString, NmWeaponType.TRIDENT, entityType);
     }
 
     @Override
@@ -84,10 +83,5 @@ public abstract class NmTrident extends NmThrowableWeapon {
                 }
             }
         }
-    }
-
-    @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.SPEAR;
     }
 }
